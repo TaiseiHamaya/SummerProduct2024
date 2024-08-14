@@ -55,6 +55,18 @@
     <Filter Include="ソース ファイル\3d">
       <UniqueIdentifier>{bae74094-0d87-4e70-a2ca-607f6eee3815}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\scene\player">
+      <UniqueIdentifier>{056658e1-07c1-4313-89b3-2050bb38e69b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scene\player">
+      <UniqueIdentifier>{c38ab260-70ad-4717-852e-0565bb3b0df1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game">
+      <UniqueIdentifier>{20ba38d3-555a-4a69-91c4-b495c6cdb6d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game">
+      <UniqueIdentifier>{af989c75-679c-4b1d-9693-33be0cadf835}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -101,6 +113,12 @@
     </ClCompile>
     <ClCompile Include="3d\WorldTransformEX.cpp">
       <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Player\Player.cpp">
+      <Filter>ソース ファイル\scene\player</Filter>
+    </ClCompile>
+    <ClCompile Include="game\GameObject.cpp">
+      <Filter>ソース ファイル\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="base\WinApp.h">
       <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="scene\GameScene.h">
-      <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
     <ClInclude Include="input\Input.h">
       <Filter>ヘッダー ファイル\input</Filter>
@@ -214,6 +229,15 @@
     </ClInclude>
     <ClInclude Include="math\Array2D.h">
       <Filter>ヘッダー ファイル\math</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Player\Player.h">
+      <Filter>ヘッダー ファイル\scene\player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AL3_KamataEngine3D\DirectXGame\game\GameObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GameObject.h">
+      <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

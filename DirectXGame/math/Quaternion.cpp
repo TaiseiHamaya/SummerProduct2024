@@ -66,8 +66,7 @@ bool Quaternion::operator!=(const Quaternion& rhs) const noexcept {
 Quaternion Quaternion::operator*(const Quaternion& rhs) const noexcept {
 	Vector3 resultV = rhs.xyz * w + xyz * rhs.w + Vector3::CrossProduct(rhs.xyz, xyz);
 	return Quaternion{
-		resultV.x,resultV.y,resultV.z,
-		w * rhs.w - Vector3::DotProduct(xyz, rhs.xyz)
+		resultV, w * rhs.w - Vector3::DotProduct(xyz, rhs.xyz)
 	};
 }
 
@@ -77,7 +76,7 @@ Quaternion& Quaternion::operator*=(const Quaternion& rhs) noexcept {
 }
 
 Quaternion Quaternion::operator*(float times) const noexcept {
-	return { xyz.x * times, xyz.y * times, xyz.z * times, w * times };
+	return { xyz * times, w * times };
 }
 
 Quaternion& Quaternion::operator*=(float times) noexcept {
