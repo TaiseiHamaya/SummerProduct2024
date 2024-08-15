@@ -1,5 +1,7 @@
 #include "GameObject.h"
 
+const ViewProjection* GameObject::defaultViewProjection = nullptr;
+
 void GameObject::initialize() {
 	hierarchy.Initialize();
 	model.reset();
@@ -12,9 +14,15 @@ void GameObject::begin_rendering() {
 	hierarchy.UpdateMatrix(transform);
 }
 
-void GameObject::draw([[maybe_unused]] const ViewProjection& viewProjection) const {
-	if (!model.expired())
-		model.lock()->Draw(hierarchy, viewProjection);
+void GameObject::draw() const {
+	draw(*defaultViewProjection);
+}
+
+void GameObject::draw(const ViewProjection& viewProjection) const {
+	auto locked = model.lock();
+	if (locked) {
+		locked->Draw(hierarchy, viewProjection);
+	}
 }
 
 Vector3 GameObject::get_position() const {
@@ -23,4 +31,8 @@ Vector3 GameObject::get_position() const {
 
 void GameObject::set_parent(const GameObject& rhs) {
 	hierarchy.parent_ = &rhs.hierarchy;
+}
+
+void GameObject::SetStaticViewProjection(const ViewProjection& viewProjection) {
+	defaultViewProjection = &viewProjection;
 }

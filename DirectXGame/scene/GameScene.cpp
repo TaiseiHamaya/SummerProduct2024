@@ -2,6 +2,7 @@
 
 #include "TextureManager.h"
 #include "AxisIndicator.h"
+#include "Sprite.h"
 
 #include <cassert>
 
@@ -43,6 +44,8 @@ void GameScene::Initialize() {
 	isDebugCameraActive = false;
 	debugCamera = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(true);
+
+	GameObject::SetStaticViewProjection(*viewProjection);
 }
 
 void GameScene::Update() {
@@ -116,7 +119,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	player->draw(*viewProjection);
+	player->draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

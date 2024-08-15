@@ -5,9 +5,6 @@
 #include <memory>
 
 class Input;
-class Sprite;
-class Reticle;
-class Enemy;
 
 class Player : public GameObject {
 public: // コンストラクタ
@@ -24,7 +21,5 @@ public:
 	void on_collision();
 
 private: // メンバ変数
-	int attackTimer;
-
-	Input* input;
+	Input* input = nullptr;
 };
