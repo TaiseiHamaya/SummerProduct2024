@@ -6,6 +6,6 @@ void WorldTransform::UpdateMatrix(const Transform3D& transform) {
 	if (parent_) {
 		matWorld_ *= parent_->matWorld_;
 	}
-	
+
 	TransferMatrix();
 }

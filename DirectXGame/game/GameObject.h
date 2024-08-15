@@ -11,9 +11,19 @@
 
 class GameObject {
 public:
+	GameObject() = default;
+	~GameObject() = default;
+
+	// コピー禁止、ムーブ許可
+	GameObject(const GameObject&) = delete;
+	GameObject& operator=(const GameObject&) = delete;
+	GameObject(GameObject&&) = default;
+	GameObject& operator=(GameObject&&) = default;
+
+public:
 	virtual void initialize();
 	virtual void update();
-	void begin_rendering();
+	virtual void begin_rendering();
 	virtual void draw() const;
 	virtual void draw(const ViewProjection& viewProjection) const;
 
@@ -25,11 +35,11 @@ public:
 protected:
 	Transform3D transform;
 	WorldTransform hierarchy;
-	std::weak_ptr<Model> model;
+	std::shared_ptr<Model> model;
 
 public:
 	static void SetStaticViewProjection(const ViewProjection& viewProjection);
 
-private:
+protected:
 	static const ViewProjection* defaultViewProjection;
 };

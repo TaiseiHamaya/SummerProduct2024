@@ -4,10 +4,12 @@
 #include "DirectXCommon.h"
 #include "Input.h"
 
+#include "Camera3D.h"
+
 #include "Model.h"
-#include "ViewProjection.h"
 
 #include "Player/Player.h"
+#include "RailField/RailField.h"
 
 #ifdef _DEBUG
 #include "DebugCamera.h"
@@ -56,10 +58,8 @@ private: // メンバ変数
 	std::shared_ptr<Model> playerModel;
 	std::shared_ptr<Model> skydomeModel;
 
-	std::unique_ptr<ViewProjection> viewProjection;
+	std::unique_ptr<Camera3D> camera;
 
 	std::unique_ptr<Player> player;
-
-	bool isDebugCameraActive{ false };
-	std::unique_ptr<DebugCamera> debugCamera;
+	std::unique_ptr<RailField> field;
 };

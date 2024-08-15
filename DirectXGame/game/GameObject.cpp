@@ -19,9 +19,8 @@ void GameObject::draw() const {
 }
 
 void GameObject::draw(const ViewProjection& viewProjection) const {
-	auto locked = model.lock();
-	if (locked) {
-		locked->Draw(hierarchy, viewProjection);
+	if (model) {
+		model->Draw(hierarchy, viewProjection);
 	}
 }
 

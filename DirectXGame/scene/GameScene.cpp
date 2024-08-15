@@ -17,8 +17,6 @@ GameScene::GameScene() = default;
 GameScene::~GameScene() = default;
 
 void GameScene::Initialize() {
-	Camera3D::Initialize();
-
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
@@ -28,6 +26,18 @@ void GameScene::Initialize() {
 	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
 	//skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 
+	field = std::make_unique<RailField>();
+	field->initialize();
+
+	camera = std::make_unique<Camera3D>();
+	camera->initialize();
+	camera->set_parent(*field);
+	camera->set_transform({
+		CVector3::BASIS,
+		Quaternion::EulerDegree(45, 0, 0),
+		{ 0, 10, -10 }
+		});
+
 	// 天球
 	//skydome = std::make_unique<Skydome>();
 	//skydome->initialize(skydomeModel);
@@ -36,61 +46,31 @@ void GameScene::Initialize() {
 	player = std::make_unique<Player>();
 	player->initialize();
 	player->default_data(playerModel, { 0,0,0 });
+	player->set_parent(*field);
 
-	viewProjection = std::make_unique<ViewProjection>();
-	viewProjection->Initialize();
-	AxisIndicator::GetInstance()->SetTargetViewProjection(viewProjection.get());
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
 
-	isDebugCameraActive = false;
-	debugCamera = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
+#ifdef _DEBUG
 	AxisIndicator::GetInstance()->SetVisible(true);
+#endif // _DEBUG
 
-	GameObject::SetStaticViewProjection(*viewProjection);
+	GameObject::SetStaticViewProjection(camera->get_view_projection());
 }
 
 void GameScene::Update() {
 
 #ifdef _DEBUG
-	Camera3D::DebugGUI();
+	camera->debug_gui();
 #endif // _DEBUG
 
 	// 更新処理
-	Camera3D::CameraUpdate();
+	field->update();
+	camera->update();
 	player->update();
 
+	field->begin_rendering();
+	camera->begin_rendering();
 	player->begin_rendering();
-
-#ifdef _DEBUG
-	// デバッグカメラ
-	if (input_->TriggerKey(DIK_F1)) {
-		isDebugCameraActive = !isDebugCameraActive;
-	}
-	if (isDebugCameraActive) {
-		// デバッグカメラ時の更新
-		// ImGuiにMOしている際は更新しない
-		if (!ImGui::GetIO().WantCaptureMouse) {
-			debugCamera->Update();
-		}
-		//railCamera->update_debug(*debugCamera);
-		// ViewProjectionをDebugCameraから更新
-		auto&& vp = debugCamera->GetViewProjection();
-		viewProjection->matView = vp.matView;
-		viewProjection->matProjection = vp.matProjection;
-		viewProjection->TransferMatrix();
-	}
-	else {
-		// 通常更新
-		//railCamera->update_camera();
-		viewProjection->matView = Camera3D::GetViewMatrix();
-		viewProjection->matProjection = Camera3D::GetProjectionMatrix();
-		viewProjection->TransferMatrix();
-	}
-#else
-	// リリース時は通常更新
-	viewProjection->matView = Camera3D::GetViewMatrix();
-	viewProjection->matProjection = Camera3D::GetProjectionMatrix();
-	viewProjection->TransferMatrix();
-#endif
 }
 
 void GameScene::Draw() {
@@ -120,6 +100,10 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player->draw();
+
+#ifdef _DEBUG
+	field->debug_draw();
+#endif // _DEBUG
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

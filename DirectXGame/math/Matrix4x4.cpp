@@ -17,7 +17,7 @@ const Matrix4x4 Matrix4x4::inverse() const {
 
 	for (size_t i = 0; i < ROW; ++i) {
 		// [i][i] = 0だと左側が単位行列にならないので、別の行と交換して解決
-		if (augmented[i][i] == 0) {
+		if (std::abs(augmented[i][i]) < 1e-6) {
 			bool found = false;
 			for (size_t k = i + 1; k < ROW; ++k) {
 				if (augmented[k][i] != 0) {

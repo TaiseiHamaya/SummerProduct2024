@@ -67,6 +67,12 @@
     <Filter Include="ヘッダー ファイル\game">
       <UniqueIdentifier>{af989c75-679c-4b1d-9693-33be0cadf835}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\scene\railField">
+      <UniqueIdentifier>{f8935347-b601-40c5-a9cb-9c55e56577c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scene\railField">
+      <UniqueIdentifier>{f74017eb-f2b1-48dd-904c-c16f55367ca9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="game\GameObject.cpp">
       <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\RailField\RailField.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="game\GameObject.h">
       <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\RailField\RailField.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
