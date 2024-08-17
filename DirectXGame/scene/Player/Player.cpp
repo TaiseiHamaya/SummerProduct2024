@@ -6,6 +6,7 @@
 #include "Transform3D.h"
 
 #include <Player/MoveState/VerticalMove.h>
+#include <Player/MoveState/OmnidirectionalMove.h>
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -21,10 +22,6 @@ void Player::initialize() {
 
 	input = Input::GetInstance();
 	velocity = CVector3::ZERO;
-
-	moveState = std::make_unique<VerticalMove>();
-	moveState->initialize();
-	moveState->set_target(this);
 }
 
 void Player::update() {
@@ -38,13 +35,25 @@ void Player::update() {
 #endif // _DEBUG
 
 	// 入力処理
+	moveState->input();
+
+	// 更新処理
 	velocity = moveState->velocity();
 	transform.plus_translate(velocity * 0.016f);
+
+	auto rotateResult = moveState->quaternion();
+	if (rotateResult.has_value()) {
+		transform.set_rotate(rotateResult.value());
+	}
 }
 
 void Player::default_data(const std::shared_ptr<Model>& model_, Vector3&& position) {
 	model = model_;
 	transform.set_translate(position);
+}
+
+void Player::set_state(std::unique_ptr<BaseMoveState>&& moveState_) {
+	moveState = std::move(moveState_);
 }
 
 void Player::on_collision() {

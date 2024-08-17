@@ -129,13 +129,17 @@ const Quaternion Quaternion::FromToRotation(const Vector3& from, const Vector3& 
 
 	float cos = Vector3::DotProduct(from, to);
 
-	float halfcos = std::sqrt((1 - cos) / 2);
-	float halfsin = std::sqrt((1 + cos) / 2);
+	//float halfcos = std::sqrt((1 - cos) / 2);
+	//float halfsin = std::sqrt((1 + cos) / 2);
 
-	Quaternion result;
-	result.xyz = axis.normalize() * halfsin;
-	result.w = halfcos;
-	return result;
+	float angle = std::acos(cos);
+
+	//Quaternion result;
+	//result.xyz = axis.normalize() * halfsin;
+	//result.w = halfcos;
+	//return result;
+
+	return Quaternion::AngleAxis(axis, angle);
 }
 
 const Quaternion Quaternion::LookForward(const Vector3& forward, const Vector3& upwards) {
@@ -179,5 +183,5 @@ const Quaternion Quaternion::Slerp(const Quaternion& internal, const Quaternion&
 }
 
 const Vector3 operator*(const Vector3& vector, const Quaternion& quaternion) {
-	return (quaternion * Quaternion{ vector, 0.0f } *quaternion.inverse()).vector();
+	return (quaternion * Quaternion{ vector, 0.0f } *quaternion.inverse()).xyz;
 }

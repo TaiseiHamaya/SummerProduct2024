@@ -4,16 +4,12 @@
 #include "DirectXCommon.h"
 #include "Input.h"
 
-#include "Camera3D.h"
+#include "Camera/GazerCamera.h"
 
 #include "Model.h"
 
 #include "Player/Player.h"
 #include "RailField/RailField.h"
-
-#ifdef _DEBUG
-#include "DebugCamera.h"
-#endif // _DEBUG
 
 /// <summary>
 /// ゲームシーン
@@ -58,7 +54,7 @@ private: // メンバ変数
 	std::shared_ptr<Model> playerModel;
 	std::shared_ptr<Model> skydomeModel;
 
-	std::unique_ptr<Camera3D> camera;
+	std::unique_ptr<GazerCamera> camera;
 
 	std::unique_ptr<Player> player;
 	std::unique_ptr<RailField> field;

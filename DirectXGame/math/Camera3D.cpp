@@ -26,24 +26,6 @@ void Camera3D::initialize() {
 	debugCamera = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	input = Input::GetInstance();
 #endif // _DEBUG
-
-	update();
-}
-
-void Camera3D::update() {
-#ifdef _DEBUG
-	// デバッグカメラ
-	if (input->TriggerKey(DIK_F1)) {
-		isDebugCameraActive = !isDebugCameraActive;
-	}
-	if (isDebugCameraActive) {
-		// ImGuiにMOしている際は更新しない
-		if (!ImGui::GetIO().WantCaptureMouse) {
-			debugCamera->Update();
-		}
-	}
-#endif // _DEBUG
-
 }
 
 void Camera3D::begin_rendering() {
@@ -82,17 +64,26 @@ void Camera3D::set_perspective_fov_info(float fovY_, float aspectRatio_, float n
 	this->farClip = farClip_;
 }
 
-ViewProjection& Camera3D::get_view_projection() const {
+const ViewProjection& Camera3D::get_view_projection() const {
 	return *viewProjection;
 }
 
 #ifdef _DEBUG
 void Camera3D::debug_gui() {
-	ImGui::SetNextWindowSize(ImVec2{ 330,165 }, ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2{ 20, 20 }, ImGuiCond_Once);
-	ImGui::Begin("3DCamera", nullptr, ImGuiWindowFlags_NoSavedSettings);
 	transform.debug_gui();
-	ImGui::End();
+}
+
+void Camera3D::debug_camera() {
+	// デバッグカメラ
+	if (input->TriggerKey(DIK_F1)) {
+		isDebugCameraActive = !isDebugCameraActive;
+	}
+	if (isDebugCameraActive) {
+		// ImGuiにMOしている際は更新しない
+		if (!ImGui::GetIO().WantCaptureMouse) {
+			debugCamera->Update();
+		}
+	}
 }
 #endif // _DEBUG
 

@@ -1,12 +1,14 @@
 #include "GameScene.h"
 
+#include <cassert>
+
 #include "TextureManager.h"
 #include "AxisIndicator.h"
 #include "Sprite.h"
 
-#include <cassert>
+#include <Camera3D.h>
 
-#include "Camera3D.h"
+#include <Player/MoveState/OmnidirectionalMove.h>
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -19,6 +21,7 @@ GameScene::~GameScene() = default;
 void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
+	input_->SetJoystickDeadZone(0, 0, 0);
 	audio_ = Audio::GetInstance();
 
 	// いろいろ
@@ -29,7 +32,7 @@ void GameScene::Initialize() {
 	field = std::make_unique<RailField>();
 	field->initialize();
 
-	camera = std::make_unique<Camera3D>();
+	camera = std::make_unique<GazerCamera>();
 	camera->initialize();
 	camera->set_parent(*field);
 	camera->set_transform({
@@ -37,6 +40,7 @@ void GameScene::Initialize() {
 		Quaternion::EulerDegree(45, 0, 0),
 		{ 0, 10, -10 }
 		});
+	camera->set_offset({ 0,0,-10 });
 
 	// 天球
 	//skydome = std::make_unique<Skydome>();
@@ -47,6 +51,13 @@ void GameScene::Initialize() {
 	player->initialize();
 	player->default_data(playerModel, { 0,0,0 });
 	player->set_parent(*field);
+
+	auto tempMoveState = std::make_unique<OmnidirectionalMove>();
+	tempMoveState->initialize();
+	tempMoveState->set_target(player.get());
+	tempMoveState->set_camera(camera.get());
+
+	player->set_state(std::move(tempMoveState));
 
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
 
@@ -60,7 +71,12 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 
 #ifdef _DEBUG
+	ImGui::SetNextWindowSize(ImVec2{ 330,190 }, ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2{ 20, 20 }, ImGuiCond_Once);
+	ImGui::Begin("3DCamera", nullptr, ImGuiWindowFlags_NoSavedSettings);
 	camera->debug_gui();
+	ImGui::End();
+	camera->debug_camera();
 #endif // _DEBUG
 
 	// 更新処理

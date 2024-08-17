@@ -141,6 +141,12 @@
     <ClCompile Include="scene\Player\MoveState\VerticalMove.cpp">
       <Filter>ソース ファイル\scene\player\MoveState</Filter>
     </ClCompile>
+    <ClCompile Include="scene\Player\MoveState\OmnidirectionalMove.cpp">
+      <Filter>ソース ファイル\scene\player\MoveState</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Camera\GazerCamera.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -270,6 +276,12 @@
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
     <ClInclude Include="scene\GameScene.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Player\MoveState\OmnidirectionalMove.h">
+      <Filter>ヘッダー ファイル\scene\player\MoveState</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Camera\GazerCamera.h">
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
   </ItemGroup>

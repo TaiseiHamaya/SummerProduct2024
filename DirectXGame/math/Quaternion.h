@@ -79,6 +79,7 @@ public:
 	Quaternion& operator*=(const Quaternion& rhs) noexcept;
 	Quaternion operator*(float times) const noexcept;
 	Quaternion& operator*=(float times) noexcept;
+	friend const Vector3 operator*(const Vector3& vector, const Quaternion& quaternion);
 
 public: // メンバ関数
 	/// <summary>

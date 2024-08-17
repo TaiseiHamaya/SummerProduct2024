@@ -47,7 +47,7 @@ const Vector3 Vector3::Abs(const Vector3& vector) noexcept {
 }
 
 Vector3 Vector3::Projection(const Vector3& vector, const Vector3& onto) {
-	assert(onto.length() == 1);
+	//assert(onto.length() == 1);
 	return onto * Vector3::DotProduct(onto, vector);
 }
 
