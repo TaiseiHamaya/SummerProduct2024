@@ -5,6 +5,8 @@
 #include <ViewProjection.h>
 #include "Transform3D.h"
 
+#include <Player/MoveState/VerticalMove.h>
+
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
@@ -18,6 +20,11 @@ void Player::initialize() {
 	model.reset();
 
 	input = Input::GetInstance();
+	velocity = CVector3::ZERO;
+
+	moveState = std::make_unique<VerticalMove>();
+	moveState->initialize();
+	moveState->set_target(this);
 }
 
 void Player::update() {
@@ -29,6 +36,10 @@ void Player::update() {
 	transform.debug_gui();
 	ImGui::End();
 #endif // _DEBUG
+
+	// 入力処理
+	velocity = moveState->velocity();
+	transform.plus_translate(velocity * 0.016f);
 }
 
 void Player::default_data(const std::shared_ptr<Model>& model_, Vector3&& position) {

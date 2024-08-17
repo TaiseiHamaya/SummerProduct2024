@@ -4,6 +4,8 @@
 
 #include <memory>
 
+#include <Player/MoveState/BaseMoveState.h>
+
 class Input;
 
 class Player : public GameObject {
@@ -22,4 +24,7 @@ public:
 
 private: // メンバ変数
 	Input* input = nullptr;
+
+	std::unique_ptr<BaseMoveState> moveState;
+	Vector3 velocity;
 };

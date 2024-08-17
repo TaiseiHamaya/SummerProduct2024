@@ -122,11 +122,12 @@
     <ClCompile Include="math\Vector2.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="scene\Player\MoveState\BaseMoveState.cpp" />
+    <ClCompile Include="scene\Player\MoveState\VerticalMove.cpp" />
     <ClCompile Include="scene\Player\Player.cpp" />
     <ClCompile Include="scene\RailField\RailField.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\AL3_KamataEngine3D\DirectXGame\game\GameObject.h" />
     <ClInclude Include="2d\ImGuiManager.h" />
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="3d\AxisIndicator.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="game\GameObject.h" />
+    <ClInclude Include="game\TimedCall.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\Array2D.h" />
     <ClInclude Include="math\Camera3D.h" />
@@ -164,6 +166,8 @@
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
+    <ClInclude Include="scene\Player\MoveState\BaseMoveState.h" />
+    <ClInclude Include="scene\Player\MoveState\VerticalMove.h" />
     <ClInclude Include="scene\Player\Player.h" />
     <ClInclude Include="scene\RailField\RailField.h" />
   </ItemGroup>

@@ -20,7 +20,6 @@ void RailField::update() {
 	transform.debug_gui();
 	ImGui::End();
 #endif // _DEBUG
-
 }
 
 #ifdef _DEBUG

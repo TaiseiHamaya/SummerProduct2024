@@ -28,6 +28,14 @@ Vector3 GameObject::get_position() const {
 	return Transform3D::ExtractPosition(hierarchy.matWorld_);
 }
 
+const Transform3D& GameObject::get_transform() const {
+	return transform;
+}
+
+Transform3D& GameObject::get_transform() {
+	return transform;
+}
+
 void GameObject::set_parent(const GameObject& rhs) {
 	hierarchy.parent_ = &rhs.hierarchy;
 }

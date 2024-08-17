@@ -12,7 +12,7 @@
 class GameObject {
 public:
 	GameObject() = default;
-	~GameObject() = default;
+	virtual ~GameObject() = default;
 
 	// コピー禁止、ムーブ許可
 	GameObject(const GameObject&) = delete;
@@ -29,6 +29,9 @@ public:
 
 public:
 	Vector3 get_position() const;
+	const Transform3D& get_transform() const;
+	Transform3D& get_transform();
+
 
 	void set_parent(const GameObject& rhs);
 
