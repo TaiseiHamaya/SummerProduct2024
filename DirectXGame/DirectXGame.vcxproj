@@ -166,6 +166,7 @@
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
+    <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\Player\MoveState\BaseMoveState.h" />
     <ClInclude Include="scene\Player\MoveState\VerticalMove.h" />
     <ClInclude Include="scene\Player\Player.h" />

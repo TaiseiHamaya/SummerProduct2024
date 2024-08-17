@@ -73,6 +73,12 @@
     <Filter Include="ヘッダー ファイル\scene\railField">
       <UniqueIdentifier>{f74017eb-f2b1-48dd-904c-c16f55367ca9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\scene\player\MoveState">
+      <UniqueIdentifier>{3e43aeaa-015b-4f06-b8a6-414e7bc7bccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scene\player\MoveState">
+      <UniqueIdentifier>{a03361c8-4af3-41c5-b37c-5e7258ead551}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -127,7 +133,13 @@
       <Filter>ソース ファイル\game</Filter>
     </ClCompile>
     <ClCompile Include="scene\RailField\RailField.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\scene\railField</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Player\MoveState\BaseMoveState.cpp">
+      <Filter>ソース ファイル\scene\player\MoveState</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Player\MoveState\VerticalMove.cpp">
+      <Filter>ソース ファイル\scene\player\MoveState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,14 +254,23 @@
     <ClInclude Include="scene\Player\Player.h">
       <Filter>ヘッダー ファイル\scene\player</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\AL3_KamataEngine3D\DirectXGame\game\GameObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="game\GameObject.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
     <ClInclude Include="scene\RailField\RailField.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\scene\railField</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Player\MoveState\BaseMoveState.h">
+      <Filter>ヘッダー ファイル\scene\player\MoveState</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Player\MoveState\VerticalMove.h">
+      <Filter>ヘッダー ファイル\scene\player\MoveState</Filter>
+    </ClInclude>
+    <ClInclude Include="game\TimedCall.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\GameScene.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
