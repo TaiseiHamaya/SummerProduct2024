@@ -1,11 +1,12 @@
 #include "BaseMoveState.h"
 
 void BaseMoveState::initialize() {
-	gameObject = nullptr;
 	p_input = Input::GetInstance();
 }
 
 void BaseMoveState::input() {
+	constexpr float DEADZONE = 0.2f;
+
 	inputResult = p_input->GetJoystickState(0, joyState);
 
 	moveStickL = CVector3::ZERO;
@@ -19,8 +20,7 @@ void BaseMoveState::input() {
 		moveStickR.x += float(joyState.Gamepad.sThumbRX) / (std::numeric_limits<short>::max)();
 		moveStickR.z += float(joyState.Gamepad.sThumbRY) / (std::numeric_limits<short>::max)();
 	}
-}
 
-void BaseMoveState::set_target(const GameObject* target) {
-	gameObject = target;
+	moveStickL = moveStickL.normalize_safe(DEADZONE, CVector3::ZERO);
+	moveStickR = moveStickR.normalize_safe(DEADZONE, CVector3::ZERO);
 }

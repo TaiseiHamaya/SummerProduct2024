@@ -54,7 +54,6 @@ void GameScene::Initialize() {
 
 	auto tempMoveState = std::make_unique<OmnidirectionalMove>();
 	tempMoveState->initialize();
-	tempMoveState->set_target(player.get());
 	tempMoveState->set_camera(camera.get());
 
 	player->set_state(std::move(tempMoveState));
