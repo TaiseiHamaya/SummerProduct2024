@@ -9,6 +9,8 @@
 #include <Camera3D.h>
 
 #include <Player/MoveState/OmnidirectionalMove.h>
+#include <Player/MoveState/SideMove.h>
+#include <Player/MoveState/VerticalMove.h>
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -52,7 +54,7 @@ void GameScene::Initialize() {
 	player->default_data(playerModel, { 0,0,0 });
 	player->set_parent(*field);
 
-	auto tempMoveState = std::make_unique<OmnidirectionalMove>();
+	auto tempMoveState = std::make_unique<VerticalMove>();
 	tempMoveState->initialize();
 	tempMoveState->set_camera(camera.get());
 

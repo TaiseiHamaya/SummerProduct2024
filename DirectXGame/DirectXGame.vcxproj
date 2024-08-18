@@ -125,6 +125,7 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\Player\MoveState\BaseMoveState.cpp" />
     <ClCompile Include="scene\Player\MoveState\OmnidirectionalMove.cpp" />
+    <ClCompile Include="scene\Player\MoveState\SideMove.cpp" />
     <ClCompile Include="scene\Player\MoveState\VerticalMove.cpp" />
     <ClCompile Include="scene\Player\Player.cpp" />
     <ClCompile Include="scene\RailField\RailField.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\Player\MoveState\BaseMoveState.h" />
     <ClInclude Include="scene\Player\MoveState\OmnidirectionalMove.h" />
+    <ClInclude Include="scene\Player\MoveState\SideMove.h" />
     <ClInclude Include="scene\Player\MoveState\VerticalMove.h" />
     <ClInclude Include="scene\Player\Player.h" />
     <ClInclude Include="scene\RailField\RailField.h" />

@@ -2,10 +2,10 @@
 
 #include "Player/MoveState/BaseMoveState.h"
 
-class VerticalMove : public BaseMoveState {
+class SideMove : public BaseMoveState {
 public:
-	VerticalMove() = default;
-	~VerticalMove() = default;
+	SideMove() = default;
+	~SideMove() = default;
 
 public:
 	Vector3 velocity() const override;

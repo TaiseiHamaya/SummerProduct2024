@@ -147,6 +147,9 @@
     <ClCompile Include="scene\Camera\GazerCamera.cpp">
       <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
+    <ClCompile Include="scene\Player\MoveState\SideMove.cpp">
+      <Filter>ソース ファイル\scene\player\MoveState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="scene\Camera\GazerCamera.h">
       <Filter>ヘッダー ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Player\MoveState\SideMove.h">
+      <Filter>ヘッダー ファイル\scene\player\MoveState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
