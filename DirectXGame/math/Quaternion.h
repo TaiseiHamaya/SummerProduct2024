@@ -129,6 +129,9 @@ public: // グローバルメンバ関数
 
 namespace CQuaternion {
 	static const Quaternion IDENTITY{ 0,0,0,1 };
+	static const Quaternion BACK_X{ 1,0,0,0 };
+	static const Quaternion BACK_Y{ 0,1,0,0 };
+	static const Quaternion BACK_Z{ 0,0,1,0 };
 };
 
 const Vector3 operator*(const Vector3& vector, const Quaternion& quaternion);

@@ -15,8 +15,6 @@ void BaseMoveState::input() {
 	if (inputResult) {
 		moveStickL.x += float(joyState.Gamepad.sThumbLX) / (std::numeric_limits<short>::max)();
 		moveStickL.z += float(joyState.Gamepad.sThumbLY) / (std::numeric_limits<short>::max)();
-	}
-	if (inputResult) {
 		moveStickR.x += float(joyState.Gamepad.sThumbRX) / (std::numeric_limits<short>::max)();
 		moveStickR.z += float(joyState.Gamepad.sThumbRY) / (std::numeric_limits<short>::max)();
 	}

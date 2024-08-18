@@ -122,17 +122,27 @@ const Vector3& Quaternion::vector() const noexcept {
 }
 
 const Quaternion Quaternion::FromToRotation(const Vector3& from, const Vector3& to) {
-	Vector3 axis = Vector3::CrossProduct(from, to);
-	if (axis == CVector3::ZERO) {
+	float cos = Vector3::DotProduct(from, to);
+	// from == toの場合
+	if (cos > 1 - 1e-4f) {
 		return CQuaternion::IDENTITY;
 	}
+	// from == -toの場合
+	else if (cos < 1e-4f - 1) {
+		Vector3 orthogonal = CVector3::BASIS_X;
+		if (std::abs(from.x) > 1 - 1e-4f) {
+			orthogonal = CVector3::BASIS_Y;
+		}
+		Vector3 axis = Vector3::CrossProduct(from, orthogonal).normalize();
+		return Quaternion{axis, 0};
+	}
 
-	float cos = Vector3::DotProduct(from, to);
+	Vector3 axis = Vector3::CrossProduct(from, to);
+
+	float angle = std::acos(cos);
 
 	//float halfcos = std::sqrt((1 - cos) / 2);
 	//float halfsin = std::sqrt((1 + cos) / 2);
-
-	float angle = std::acos(cos);
 
 	//Quaternion result;
 	//result.xyz = axis.normalize() * halfsin;
