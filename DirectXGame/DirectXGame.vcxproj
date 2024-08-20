@@ -111,6 +111,7 @@
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="game\GameObject.cpp" />
+    <ClCompile Include="game\GameTimer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Camera3D.cpp" />
     <ClCompile Include="math\Color.cpp" />
@@ -123,6 +124,7 @@
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="scene\Camera\GazerCamera.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="scene\Player\Bullet.cpp" />
     <ClCompile Include="scene\Player\MoveState\BaseMoveState.cpp" />
     <ClCompile Include="scene\Player\MoveState\OmnidirectionalMove.cpp" />
     <ClCompile Include="scene\Player\MoveState\SideMove.cpp" />
@@ -155,6 +157,7 @@
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="game\GameObject.h" />
+    <ClInclude Include="game\GameTimer.h" />
     <ClInclude Include="game\TimedCall.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\Array2D.h" />
@@ -171,6 +174,7 @@
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="scene\Camera\GazerCamera.h" />
     <ClInclude Include="scene\GameScene.h" />
+    <ClInclude Include="scene\Player\Bullet.h" />
     <ClInclude Include="scene\Player\MoveState\BaseMoveState.h" />
     <ClInclude Include="scene\Player\MoveState\OmnidirectionalMove.h" />
     <ClInclude Include="scene\Player\MoveState\SideMove.h" />

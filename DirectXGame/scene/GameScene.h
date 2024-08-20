@@ -10,6 +10,7 @@
 
 #include "Player/Player.h"
 #include "RailField/RailField.h"
+#include "Player/Bullet.h"
 
 /// <summary>
 /// ゲームシーン
@@ -42,6 +43,9 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+public:
+	void add_player_bullet();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -53,9 +57,11 @@ private: // メンバ変数
 	uint32_t textureHandle = 0;
 	std::shared_ptr<Model> playerModel;
 	std::shared_ptr<Model> skydomeModel;
+	std::shared_ptr<Model> bulletModel;
 
 	std::unique_ptr<GazerCamera> camera;
 
 	std::unique_ptr<Player> player;
 	std::unique_ptr<RailField> field;
+	std::list<Bullet> bullets;
 };

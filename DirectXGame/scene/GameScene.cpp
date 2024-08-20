@@ -1,12 +1,14 @@
 #include "GameScene.h"
 
 #include <cassert>
+#include <functional>
 
 #include "TextureManager.h"
 #include "AxisIndicator.h"
 #include "Sprite.h"
 
 #include <Camera3D.h>
+#include <GameTimer.h>
 
 #include <Player/MoveState/OmnidirectionalMove.h>
 #include <Player/MoveState/SideMove.h>
@@ -26,9 +28,11 @@ void GameScene::Initialize() {
 	input_->SetJoystickDeadZone(0, 0, 0);
 	audio_ = Audio::GetInstance();
 
+	GameTimer::Initialize();
+
 	// いろいろ
-	//textureHandle = TextureManager::Load("uvChecker.png");
 	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
+	bulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("bullet", true));
 	//skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 
 	field = std::make_unique<RailField>();
@@ -40,9 +44,9 @@ void GameScene::Initialize() {
 	camera->set_transform({
 		CVector3::BASIS,
 		Quaternion::EulerDegree(45, 0, 0),
-		{ 0, 10, -10 }
+		CVector3::ZERO
 		});
-	camera->set_offset({ 0,0,-10 });
+	camera->set_offset({ 0,0,-30 });
 
 	// 天球
 	//skydome = std::make_unique<Skydome>();
@@ -53,6 +57,7 @@ void GameScene::Initialize() {
 	player->initialize();
 	player->default_data(playerModel, { 0,0,0 });
 	player->set_parent(*field);
+	player->set_attack_func(std::bind(&GameScene::add_player_bullet, this));
 
 	auto tempMoveState = std::make_unique<VerticalMove>();
 	tempMoveState->initialize();
@@ -70,12 +75,15 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	GameTimer::Update();
 
 #ifdef _DEBUG
-	ImGui::SetNextWindowSize(ImVec2{ 330,190 }, ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2{ 330,210 }, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{ 20, 20 }, ImGuiCond_Once);
-	ImGui::Begin("3DCamera", nullptr, ImGuiWindowFlags_NoSavedSettings);
+	ImGui::Begin("System", nullptr, ImGuiWindowFlags_NoSavedSettings);
 	camera->debug_gui();
+	ImGui::Separator();
+	ImGui::Text("%f", GameTimer::DeltaTime());
 	ImGui::End();
 	camera->debug_camera();
 #endif // _DEBUG
@@ -84,10 +92,16 @@ void GameScene::Update() {
 	field->update();
 	camera->update();
 	player->update();
+	for (auto&& itr = bullets.begin(); itr != bullets.end(); ++itr) {
+		itr->update();
+	}
 
 	field->begin_rendering();
 	camera->begin_rendering();
 	player->begin_rendering();
+	for (auto&& itr = bullets.begin(); itr != bullets.end(); ++itr) {
+		itr->begin_rendering();
+	}
 }
 
 void GameScene::Draw() {
@@ -117,6 +131,9 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player->draw();
+	for (auto&& itr = bullets.begin(); itr != bullets.end(); ++itr) {
+		itr->draw();
+	}
 
 #ifdef _DEBUG
 	field->debug_draw();
@@ -138,4 +155,11 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::add_player_bullet() {
+	bullets.emplace_back();
+	auto&& newBullet = bullets.back();
+	Vector3 direction = Transform3D::HomogeneousVector(CVector3::BASIS_Z, player->world_matrix());
+	newBullet.initialize(player->get_position(), direction, bulletModel);
 }

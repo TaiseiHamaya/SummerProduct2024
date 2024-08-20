@@ -31,7 +31,7 @@ public:
 	Vector3 get_position() const;
 	const Transform3D& get_transform() const;
 	Transform3D& get_transform();
-
+	const Matrix4x4& world_matrix() const;
 
 	void set_parent(const GameObject& rhs);
 
