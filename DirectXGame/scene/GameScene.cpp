@@ -78,14 +78,19 @@ void GameScene::Update() {
 	GameTimer::Update();
 
 #ifdef _DEBUG
-	ImGui::SetNextWindowSize(ImVec2{ 330,210 }, ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2{ 20, 20 }, ImGuiCond_Once);
-	ImGui::Begin("System", nullptr, ImGuiWindowFlags_NoSavedSettings);
+	ImGui::Begin("System");
 	camera->debug_gui();
 	ImGui::Separator();
 	ImGui::Text("%f", GameTimer::DeltaTime());
 	ImGui::End();
+
+	ImGui::Begin("Bullets");
+	ImGui::Text("Count : %d", bullets.size());
+	ImGui::End();
+
 	camera->debug_camera();
+
+	player->debug_gui();
 #endif // _DEBUG
 
 	// 更新処理
@@ -95,6 +100,13 @@ void GameScene::Update() {
 	for (auto&& itr = bullets.begin(); itr != bullets.end(); ++itr) {
 		itr->update();
 	}
+
+	bullets.remove_if([](const Bullet& bullet) {
+		if (bullet.is_dead()) {
+			return true;
+		}
+		return false;
+		});
 
 	field->begin_rendering();
 	camera->begin_rendering();

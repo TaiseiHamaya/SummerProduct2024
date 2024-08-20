@@ -15,8 +15,12 @@ public:
 	void update() override;
 
 public:
+	bool is_dead() const;
 
 private:
 	Vector3 direction;
+
+	float lifeTime;
+	bool isDead;
 };
 
