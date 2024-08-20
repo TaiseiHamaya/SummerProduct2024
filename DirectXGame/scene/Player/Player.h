@@ -28,6 +28,11 @@ public:
 public:
 	void on_collision();
 
+public:
+#ifdef _DEBUG
+	void debug_gui();
+#endif // _DEBUG
+
 private: // メンバ変数
 	Input* input = nullptr;
 

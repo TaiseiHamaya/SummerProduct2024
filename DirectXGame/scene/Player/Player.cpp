@@ -24,16 +24,6 @@ void Player::initialize() {
 }
 
 void Player::update() {
-	// imgui debug
-#ifdef _DEBUG
-	ImGui::SetNextWindowPos({ 20,250 }, ImGuiCond_Once);
-	ImGui::SetNextWindowSize(ImVec2{ 330,165 }, ImGuiCond_Once);
-	ImGui::Begin("Player", nullptr, ImGuiWindowFlags_NoSavedSettings);
-	transform.debug_gui();
-	ImGui::End();
-#endif // _DEBUG
-
-
 	XINPUT_STATE joyState;
 	bool inputResult = input->GetJoystickState(0, joyState);
 
@@ -82,3 +72,12 @@ void Player::set_attack_func(const std::function<void(void)>& func) {
 void Player::on_collision() {
 	// do nothing
 }
+
+#ifdef _DEBUG
+void Player::debug_gui() {
+	// imgui debug
+	ImGui::Begin("Player");
+	transform.debug_gui();
+	ImGui::End();
+}
+#endif // _DEBUG
