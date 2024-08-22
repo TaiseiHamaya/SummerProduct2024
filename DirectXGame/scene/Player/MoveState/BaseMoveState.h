@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Input.h>
-
 #include <optional>
 
 #include <Camera3D.h>
@@ -18,7 +16,7 @@ public:
 
 public:
 	virtual void initialize();
-	void input();
+	virtual void input(const XINPUT_STATE& joyState);
 	virtual Vector3 velocity() const = 0;
 	virtual std::optional<Quaternion> quaternion() const = 0;
 
@@ -26,9 +24,6 @@ public:
 	void set_camera(const Camera3D* camera_);
 
 protected:
-	Input* p_input;
-	XINPUT_STATE joyState;
-	bool inputResult;
 	Vector2 moveStickL;
 	Vector2 moveStickR;
 

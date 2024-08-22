@@ -2,10 +2,12 @@
 
 #include <functional>
 
+#include <GameTimer.h>
+
 template<class Type>
 class TimedCall {
 public:
-	TimedCall(std::function<Type> function_, std::uint32_t time_);
+	TimedCall(std::function<Type>&& function_, float time_);
 
 	void update();
 
@@ -13,19 +15,19 @@ public:
 
 private:
 	std::function<Type> function;
-	std::uint32_t time;
+	float time;
 	bool isFinished = false;
 };
 
 template<class Type>
-inline TimedCall<Type>::TimedCall(std::function<Type> function_, std::uint32_t time_) {
+inline TimedCall<Type>::TimedCall(std::function<Type>&& function_, float time_) {
 	function = function_;
 	time = time_;
 }
 
 template<class Type>
 inline void TimedCall<Type>::update() {
-	--time;
+	time -= GameTimer::DeltaTime();
 	if (time <= 0) {
 		isFinished = true;
 		function();

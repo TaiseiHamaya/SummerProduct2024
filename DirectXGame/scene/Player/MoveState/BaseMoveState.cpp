@@ -1,23 +1,18 @@
 #include "BaseMoveState.h"
 
 void BaseMoveState::initialize() {
-	p_input = Input::GetInstance();
 }
 
-void BaseMoveState::input() {
+void BaseMoveState::input(const XINPUT_STATE& joyState) {
 	constexpr float DEADZONE = 0.2f;
-
-	inputResult = p_input->GetJoystickState(0, joyState);
 
 	moveStickL = CVector2::ZERO;
 	moveStickR = CVector2::ZERO;
 
-	if (inputResult) {
-		moveStickL.x += float(joyState.Gamepad.sThumbLX) / (std::numeric_limits<short>::max)();
-		moveStickL.y += float(joyState.Gamepad.sThumbLY) / (std::numeric_limits<short>::max)();
-		moveStickR.x += float(joyState.Gamepad.sThumbRX) / (std::numeric_limits<short>::max)();
-		moveStickR.y += float(joyState.Gamepad.sThumbRY) / (std::numeric_limits<short>::max)();
-	}
+	moveStickL.x += joyState.Gamepad.sThumbLX / float((std::numeric_limits<short>::max)());
+	moveStickL.y += joyState.Gamepad.sThumbLY / float((std::numeric_limits<short>::max)());
+	moveStickR.x += joyState.Gamepad.sThumbRX / float((std::numeric_limits<short>::max)());
+	moveStickR.y += joyState.Gamepad.sThumbRY / float((std::numeric_limits<short>::max)());
 
 	moveStickL = moveStickL.normalize_safe(DEADZONE, CVector2::ZERO);
 	moveStickR = moveStickR.normalize_safe(DEADZONE, CVector2::ZERO);

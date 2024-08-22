@@ -1,11 +1,19 @@
 #include "Player.h"
 
-#include <GameTimer.h>
-
 #include <cassert>
+
 #include <Input.h>
 #include <ViewProjection.h>
-#include "Transform3D.h"
+
+#include <GameTimer.h>
+#include <Transform3D.h>
+
+#include "Timeline/GameModeManager.h"
+
+#include <Player/MoveState/OmnidirectionalMove.h>
+#include <Player/MoveState/SideMove.h>
+#include <Player/MoveState/VerticalMove.h>
+#include <Player/MoveState/TransitionMove.h>
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -28,7 +36,9 @@ void Player::update() {
 	bool inputResult = input->GetJoystickState(0, joyState);
 
 	// 入力処理
-	moveState->input();
+	if (inputResult) {
+		moveState->input(joyState);
+	}
 
 	// 更新処理
 	velocity = moveState->velocity();
@@ -42,7 +52,7 @@ void Player::update() {
 	}
 
 	attackTimer -= GameTimer::DeltaTime();
-	if (inputResult && 
+	if (inputResult &&
 		(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) &&
 		attackTimer <= 0) {
 		attack();
@@ -61,12 +71,48 @@ void Player::default_data(const std::shared_ptr<Model>& model_, Vector3&& positi
 	transform.set_translate(position);
 }
 
-void Player::set_state(std::unique_ptr<BaseMoveState>&& moveState_) {
-	moveState = std::move(moveState_);
+void Player::set_move_state(TransitionData* transitionData) {
+	assert(transitionData);
+	switch (transitionData->nextMode) {
+	case GameMode::VERTICAL:
+		moveState = std::make_unique<VerticalMove>();
+		break;
+	case GameMode::SIDE:
+		moveState = std::make_unique<SideMove>();
+		break;
+	case GameMode::OMNIDIRECTIONAL:
+		moveState = std::make_unique<OmnidirectionalMove>();
+		break;
+	case GameMode::TRANSITION:
+	{
+		auto&& temp = std::make_unique<TransitionMove>();
+		temp->set_transition_data(transitionData);
+		temp->move_now_move_state(std::move(moveState));
+		temp->set_player_transform(transform);
+		moveState = std::move(temp);
+	}
+	break;
+	case GameMode::NANE:
+	case GameMode::DEBUG_:
+	case GameMode::EDITOR_:
+		// do nothing
+		break;
+	default:
+		assert(false);
+		break;
+	}
+	if (moveState) {
+		moveState->initialize();
+		moveState->set_camera(camera);
+	}
 }
 
 void Player::set_attack_func(const std::function<void(void)>& func) {
 	attackFunction = func;
+}
+
+void Player::set_camera(Camera3D* camera_) {
+	camera = camera_;
 }
 
 void Player::on_collision() {

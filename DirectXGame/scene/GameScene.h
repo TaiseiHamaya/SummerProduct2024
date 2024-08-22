@@ -8,9 +8,13 @@
 
 #include "Model.h"
 
+#include <Timeline/GameModeManager.h>
+#include <Timeline/GameTimeline.h>
+
 #include "Player/Player.h"
 #include "RailField/RailField.h"
 #include "Player/Bullet.h"
+#include "Enemy/Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -45,6 +49,7 @@ public: // メンバ関数
 
 public:
 	void add_player_bullet();
+	void add_enemy(const std::string& movementFile);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -61,7 +66,11 @@ private: // メンバ変数
 
 	std::unique_ptr<GazerCamera> camera;
 
-	std::unique_ptr<Player> player;
 	std::unique_ptr<RailField> field;
-	std::list<Bullet> bullets;
+	std::unique_ptr<GameTimeline> timeline;
+	std::unique_ptr<GameModeManager> gameModeManager;
+
+	std::unique_ptr<Player> player;
+	std::list<Bullet> playerBullets;
+	std::list<Enemy> enemies;
 };

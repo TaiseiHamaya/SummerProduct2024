@@ -10,10 +10,6 @@
 #include <Camera3D.h>
 #include <GameTimer.h>
 
-#include <Player/MoveState/OmnidirectionalMove.h>
-#include <Player/MoveState/SideMove.h>
-#include <Player/MoveState/VerticalMove.h>
-
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
@@ -58,12 +54,17 @@ void GameScene::Initialize() {
 	player->default_data(playerModel, { 0,0,0 });
 	player->set_parent(*field);
 	player->set_attack_func(std::bind(&GameScene::add_player_bullet, this));
+	player->set_camera(camera.get());
 
-	auto tempMoveState = std::make_unique<VerticalMove>();
-	tempMoveState->initialize();
-	tempMoveState->set_camera(camera.get());
+	gameModeManager = std::make_unique<GameModeManager>();
+	gameModeManager->initialize();
+	gameModeManager->set_camera(camera.get());
+	gameModeManager->set_player_func(std::bind(&Player::set_move_state, player.get(), std::placeholders::_1));
 
-	player->set_state(std::move(tempMoveState));
+	timeline = std::make_unique<GameTimeline>();
+	timeline->set_mode(gameModeManager.get());
+	timeline->set_spawn_func(std::bind(&GameScene::add_enemy, this, std::placeholders::_1));
+	timeline->load("./Resources/timeline/Timeline.csv");
 
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
 
@@ -77,6 +78,10 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 	GameTimer::Update();
 
+	timeline->update();
+
+	gameModeManager->update();
+
 #ifdef _DEBUG
 	ImGui::Begin("System");
 	camera->debug_gui();
@@ -85,10 +90,12 @@ void GameScene::Update() {
 	ImGui::End();
 
 	ImGui::Begin("Bullets");
-	ImGui::Text("Count : %d", bullets.size());
+	ImGui::Text("Count : %d", playerBullets.size());
 	ImGui::End();
 
 	camera->debug_camera();
+
+	gameModeManager->debug_gui();
 
 	player->debug_gui();
 #endif // _DEBUG
@@ -97,11 +104,11 @@ void GameScene::Update() {
 	field->update();
 	camera->update();
 	player->update();
-	for (auto&& itr = bullets.begin(); itr != bullets.end(); ++itr) {
+	for (auto&& itr = playerBullets.begin(); itr != playerBullets.end(); ++itr) {
 		itr->update();
 	}
 
-	bullets.remove_if([](const Bullet& bullet) {
+	playerBullets.remove_if([](const Bullet& bullet) {
 		if (bullet.is_dead()) {
 			return true;
 		}
@@ -111,7 +118,7 @@ void GameScene::Update() {
 	field->begin_rendering();
 	camera->begin_rendering();
 	player->begin_rendering();
-	for (auto&& itr = bullets.begin(); itr != bullets.end(); ++itr) {
+	for (auto&& itr = playerBullets.begin(); itr != playerBullets.end(); ++itr) {
 		itr->begin_rendering();
 	}
 }
@@ -143,7 +150,7 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player->draw();
-	for (auto&& itr = bullets.begin(); itr != bullets.end(); ++itr) {
+	for (auto&& itr = playerBullets.begin(); itr != playerBullets.end(); ++itr) {
 		itr->draw();
 	}
 
@@ -170,8 +177,15 @@ void GameScene::Draw() {
 }
 
 void GameScene::add_player_bullet() {
-	bullets.emplace_back();
-	auto&& newBullet = bullets.back();
+	playerBullets.emplace_back();
+	auto&& newBullet = playerBullets.back();
 	Vector3 direction = Transform3D::HomogeneousVector(CVector3::BASIS_Z, player->world_matrix());
 	newBullet.initialize(player->get_position(), direction, bulletModel);
+}
+
+void GameScene::add_enemy([[maybe_unused]] const std::string& movementFile) {
+	enemies.emplace_back();
+	auto&& newEnemy = enemies.back();
+	newEnemy.initialize();
+	//newEnemy.load_move(movementFile);
 }
