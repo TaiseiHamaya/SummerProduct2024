@@ -93,8 +93,10 @@ void Player::set_move_state(TransitionData* transitionData) {
 	}
 	break;
 	case GameMode::NANE:
+#ifdef _DEBUG
 	case GameMode::DEBUG_:
 	case GameMode::EDITOR_:
+#endif // _DEBUG
 		// do nothing
 		break;
 	default:

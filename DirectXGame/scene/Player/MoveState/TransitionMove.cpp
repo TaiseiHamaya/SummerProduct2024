@@ -36,10 +36,12 @@ Vector3 TransitionMove::velocity() const {
 		case GameMode::SIDE:
 			nextVelocity.x = -playerTransitionData.befor.get_translate().x / transitionData->transitionTime;
 		break;
+#ifdef _DEBUG
 		case GameMode::DEBUG_:
 		case GameMode::EDITOR_:
 			// do nothing
 			break;
+#endif // _DEBUG
 		case GameMode::TRANSITION:
 		case GameMode::NANE:
 		default:
@@ -86,10 +88,12 @@ std::optional<Quaternion> TransitionMove::quaternion() const {
 			return result;
 		}
 			break;
+#ifdef _DEBUG
 		case GameMode::DEBUG_:
 		case GameMode::EDITOR_:
 			// do nothing
 			break;
+#endif // _DEBUG
 		case GameMode::TRANSITION:
 		case GameMode::NANE:
 		default:
