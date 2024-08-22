@@ -1,8 +1,5 @@
 #include "TransitionMove.h"
 
-#include <Easing.h>
-#include <GameTimer.h>
-
 #include <Timeline/GameModeManager.h>
 
 void TransitionMove::set_transition_data(TransitionData* transitionData_) {
