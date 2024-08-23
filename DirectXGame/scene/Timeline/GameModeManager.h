@@ -23,6 +23,7 @@ struct TransitionData {
 	float transitionTime;
 	float timer;
 	GameMode nextMode;
+	bool isTransitioning;
 	Quaternion beginCameraQuaternion;
 	Quaternion afterCameraQuaternion;
 

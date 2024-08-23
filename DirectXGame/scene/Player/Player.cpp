@@ -35,23 +35,26 @@ void Player::update() {
 	XINPUT_STATE joyState;
 	bool inputResult = input->GetJoystickState(0, joyState);
 
-	// 入力処理
-	if (inputResult) {
-		moveState->input(joyState);
-	}
-
-	// 更新処理
-	velocity = moveState->velocity();
-	// velocity加算
-	transform.plus_translate(velocity * GameTimer::DeltaTime());
-
-	auto&& rotateResult = moveState->quaternion();
-	if (rotateResult.has_value()) {
-		// 回転適用
-		transform.set_rotate(std::move(rotateResult.value()));
-	}
-
 	attackTimer -= GameTimer::DeltaTime();
+	
+	if (moveState) {
+		// 入力処理
+		if (inputResult) {
+			moveState->input(joyState);
+		}
+
+		// 更新処理
+		velocity = moveState->velocity();
+		// velocity加算
+		transform.plus_translate(velocity * GameTimer::DeltaTime());
+
+		auto&& rotateResult = moveState->quaternion();
+		if (rotateResult.has_value()) {
+			// 回転適用
+			transform.set_rotate(std::move(rotateResult.value()));
+		}
+	}
+
 	if (inputResult &&
 		(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) &&
 		attackTimer <= 0) {
@@ -73,6 +76,16 @@ void Player::default_data(const std::shared_ptr<Model>& model_, Vector3&& positi
 
 void Player::set_move_state(TransitionData* transitionData) {
 	assert(transitionData);
+	if (!transitionData->isTransitioning) {
+		auto&& temp = std::make_unique<TransitionMove>();
+		temp->set_transition_data(transitionData);
+		temp->move_now_move_state(std::move(moveState));
+		temp->set_player_transform(transform);
+		moveState = std::move(temp);
+		moveState->initialize();
+		moveState->set_camera(camera);
+		return;
+	}
 	switch (transitionData->nextMode) {
 	case GameMode::VERTICAL:
 		moveState = std::make_unique<VerticalMove>();

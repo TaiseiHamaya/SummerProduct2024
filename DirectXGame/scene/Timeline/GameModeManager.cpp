@@ -1,6 +1,7 @@
 #include "GameModeManager.h"
 
 #include <string>
+#include <format>
 
 #include <Utility.h>
 
@@ -22,6 +23,7 @@ void GameModeManager::update() {
 			camera->get_transform().set_rotate(transitionData.afterCameraQuaternion);
 			playerMoveStateFunc(&transitionData);
 			gameMode = transitionData.nextMode;
+			transitionData.isTransitioning = false;
 			Log(std::format("[GameModeManager] Set GameMode : {}\n", static_cast<int>(gameMode)));
 			return;
 		}
@@ -32,6 +34,9 @@ void GameModeManager::update() {
 				transitionData.parametric()
 			)
 		);
+	}
+	else if (gameMode == GameMode::VERTICAL || gameMode == GameMode::SIDE || gameMode == GameMode::OMNIDIRECTIONAL) {
+		
 	}
 #ifdef _DEBUG
 	else if (gameMode == GameMode::DEBUG_) {
@@ -46,16 +51,15 @@ void GameModeManager::update() {
 void GameModeManager::game_mode_command(std::istringstream& command) {
 	std::string word;
 	std::getline(command, word, ',');
-	GameMode nextMode = GameMode::NANE;
 	// 次のゲームモード
 	if (word == "VERTICAL") {
-		nextMode = GameMode::VERTICAL; 
+		transitionData.nextMode = GameMode::VERTICAL;
 	}
 	else if (word == "SIDE") {
-		nextMode = GameMode::SIDE;
+		transitionData.nextMode = GameMode::SIDE;
 	}
 	else if (word == "OMNIDIRECTIONAL") {
-		nextMode = GameMode::OMNIDIRECTIONAL;
+		transitionData.nextMode = GameMode::OMNIDIRECTIONAL;
 	}
 	else {
 		assert(false);
@@ -66,11 +70,9 @@ void GameModeManager::game_mode_command(std::istringstream& command) {
 	transitionData.beginCameraQuaternion = camera->get_transform().get_quaternion();
 	transitionData.timer = 0;
 
-	transitionData.nextMode = GameMode::TRANSITION;
-
 	playerMoveStateFunc(&transitionData);
 
-	transitionData.nextMode = nextMode;
+	transitionData.isTransitioning = true;
 
 	gameMode = GameMode::TRANSITION;
 
