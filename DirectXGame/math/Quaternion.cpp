@@ -167,7 +167,7 @@ const Quaternion Quaternion::Slerp(const Quaternion& internal, const Quaternion&
 	Quaternion internal_;
 	if (dot < 0) {
 		dot *= -1;
-		internal_ = internal.inverse();
+		internal_ = internal * -1;
 	}
 	else {
 		internal_ = internal;

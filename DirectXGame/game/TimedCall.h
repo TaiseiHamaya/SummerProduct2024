@@ -17,6 +17,11 @@ public:
 
 	void restart(float time);
 
+#ifdef _DEBUG
+public:
+	void debug_gui();
+#endif // _DEBUG
+
 private:
 	std::function<Type> function;
 	float time;
@@ -48,3 +53,17 @@ inline void TimedCall<Type>::restart(float time_) {
 	time = time_;
 	isFinished = false;
 }
+
+#ifdef _DEBUG
+
+#include <imgui.h>
+#include <format>
+
+template<class Type>
+inline void TimedCall<Type>::debug_gui() {
+	if (ImGui::CollapsingHeader(std::format("TimedCall##{}", (void*)this).c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
+		ImGui::Text(std::format("Finished : {:s}", isFinished).c_str());
+		ImGui::Text(std::format("Timer : {}", time).c_str());
+	}
+}
+#endif // _DEBUG

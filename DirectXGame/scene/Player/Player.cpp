@@ -51,7 +51,13 @@ void Player::update() {
 		auto&& rotateResult = moveState->quaternion();
 		if (rotateResult.has_value()) {
 			// 回転適用
-			transform.set_rotate(std::move(rotateResult.value()));
+			transform.set_rotate(
+				Quaternion::Slerp(
+					std::move(rotateResult.value()),
+					transform.get_quaternion(),
+					0.7f
+				)
+			);
 		}
 	}
 

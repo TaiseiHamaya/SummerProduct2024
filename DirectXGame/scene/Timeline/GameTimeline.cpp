@@ -93,3 +93,16 @@ void GameTimeline::set_mode(GameModeManager* gameMode_) {
 void GameTimeline::set_enemies(const std::list<Enemy>* enemies) {
 	enemyList = enemies;
 }
+
+#ifdef _DEBUG
+
+#include <imgui.h>
+
+void GameTimeline::debug_gui() {
+	ImGui::Begin("Timeline");
+	ImGui::Text(std::format("IsWaitKillAll : {:s}({})", isWaitKillALL, enemyList->size()).c_str());
+	ImGui::Separator();
+	commandCall.debug_gui();
+	ImGui::End();
+}
+#endif // _DEBUG

@@ -98,6 +98,8 @@ void GameScene::Update() {
 
 	gameModeManager->debug_gui();
 
+	timeline->debug_gui();
+
 	player->debug_gui();
 #endif // _DEBUG
 

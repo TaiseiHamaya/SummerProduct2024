@@ -24,6 +24,11 @@ public:
 	void set_mode(GameModeManager* gameMode_);
 	void set_enemies(const std::list<Enemy>* enemies);
 
+#ifdef _DEBUG
+public:
+	void debug_gui();
+#endif // _DEBUG
+
 private:
 	GameModeManager* gameMode;
 
