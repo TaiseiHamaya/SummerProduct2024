@@ -3,7 +3,6 @@
 #include <fstream>
 #include <format>
 
-#include <GameTimer.h>
 #include <Utility.h>
 
 #include <Timeline/GameModeManager.h>
@@ -12,20 +11,31 @@ void GameTimeline::load(const std::string& fileName) {
 	std::ifstream file{};
 	file.open(fileName);
 	if (!file.is_open()) {
-		Log(std::format("\'Timeline\' {} is not found.", fileName));
+		Log(std::format("[Timeline] Timeline file \'{}\' is not found.", fileName));
 		return;
 	}
 
 	timelineCommand << file.rdbuf();
 
 	file.close();
+
+	commandCall = {
+		std::bind(&GameTimeline::next_command, this), 0
+	};
 }
 
 void GameTimeline::update() {
-	waitTime -= GameTimer::DeltaTime();
-	if (waitTime > 0) {
+	if (isWaitKillALL) {
+		if (enemyList->empty()) {
+			next_command();
+			isWaitKillALL = false;
+		}
 		return;
 	}
+	commandCall.update();
+}
+
+void GameTimeline::next_command() {
 	std::string line;
 	while (std::getline(timelineCommand, line)) {
 		std::istringstream lineStream{ line };
@@ -37,13 +47,18 @@ void GameTimeline::update() {
 			continue;
 		}
 		else if (word == "POP") {
-			std::getline(lineStream, word, ',');
-			spawnFunc(word);
+			spawnFunc(lineStream);
 		}
 		else if (word == "WAIT") {
 			std::getline(lineStream, word, ',');
-			waitTime = std::stof(word);
 
+			if (word == "TIME") {
+				std::getline(lineStream, word, ',');
+				commandCall.restart(std::stof(word));
+			}
+			else if(word == "KILL_ALL") {
+				isWaitKillALL = true;
+			}
 			break;
 		}
 		else if (word == "MODE") {
@@ -64,10 +79,17 @@ void GameTimeline::update() {
 	}
 }
 
-void GameTimeline::set_spawn_func(std::function<void(const std::string&)> spawnFunction_) {
+void GameTimeline::wait_command([[maybe_unused]] std::istringstream& lineStream) {
+}
+
+void GameTimeline::set_spawn_func(std::function<void(std::istringstream&)> spawnFunction_) {
 	spawnFunc = spawnFunction_;
 }
 
 void GameTimeline::set_mode(GameModeManager* gameMode_) {
 	gameMode = gameMode_;
+}
+
+void GameTimeline::set_enemies(const std::list<Enemy>* enemies) {
+	enemyList = enemies;
 }

@@ -64,6 +64,7 @@ void GameScene::Initialize() {
 	timeline = std::make_unique<GameTimeline>();
 	timeline->set_mode(gameModeManager.get());
 	timeline->set_spawn_func(std::bind(&GameScene::add_enemy, this, std::placeholders::_1));
+	timeline->set_enemies(&enemies);
 	timeline->load("./Resources/timeline/Timeline.csv");
 
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
@@ -183,7 +184,7 @@ void GameScene::add_player_bullet() {
 	newBullet.initialize(player->get_position(), direction, bulletModel);
 }
 
-void GameScene::add_enemy([[maybe_unused]] const std::string& movementFile) {
+void GameScene::add_enemy([[maybe_unused]] std::istringstream& movementFile) {
 	enemies.emplace_back();
 	auto&& newEnemy = enemies.back();
 	newEnemy.initialize();

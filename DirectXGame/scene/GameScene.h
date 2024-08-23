@@ -49,7 +49,7 @@ public: // メンバ関数
 
 public:
 	void add_player_bullet();
-	void add_enemy(const std::string& movementFile);
+	void add_enemy(std::istringstream& movementFile);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
