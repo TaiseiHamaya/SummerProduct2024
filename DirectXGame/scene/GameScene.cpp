@@ -204,7 +204,7 @@ void GameScene::add_player_bullet() {
 	playerBullets.emplace_back();
 	auto&& newBullet = playerBullets.back();
 	Vector3 direction = Transform3D::HomogeneousVector(CVector3::BASIS_Z, player->world_matrix());
-	newBullet.initialize(player->get_position(), direction, 9.0f);
+	newBullet.initialize(player->get_position(), direction, 15.0f);
 	newBullet.set_model(playerBulletModel);
 }
 

@@ -53,9 +53,9 @@ void Player::update() {
 			// 回転適用
 			transform.set_rotate(
 				Quaternion::Slerp(
-					std::move(rotateResult.value()),
 					transform.get_quaternion(),
-					0.7f
+					std::move(rotateResult.value()),
+					0.3f
 				)
 			);
 		}
@@ -69,7 +69,7 @@ void Player::update() {
 }
 
 void Player::attack() {
-	attackTimer = 0.3f;
+	attackTimer = 0.16f;
 	if (attackFunction) {
 		attackFunction();
 	}

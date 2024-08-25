@@ -113,8 +113,20 @@ public: // メンバ関数
 	const Vector3& vector() const noexcept;
 
 public: // グローバルメンバ関数
+	/// <summary>
+	/// fromからtoに回転するQuaternionを生成
+	/// </summary>
+	/// <param name="from">開始視点</param>
+	/// <param name="to">終了視点</param>
+	/// <returns></returns>
 	static const Quaternion FromToRotation(const Vector3& from, const Vector3& to);
 
+	/// <summary>
+	/// forward方向を向くQuaternionを生成
+	/// </summary>
+	/// <param name="forward">前方</param>
+	/// <param name="upwards">上</param>
+	/// <returns></returns>
 	static const Quaternion LookForward(const Vector3& forward, const Vector3& upwards = CVector3::BASIS_Y);
 
 	/// <summary>
@@ -128,10 +140,16 @@ public: // グローバルメンバ関数
 };
 
 namespace CQuaternion {
-	static const Quaternion IDENTITY{ 0,0,0,1 };
-	static const Quaternion BACK_X{ 1,0,0,0 };
-	static const Quaternion BACK_Y{ 0,1,0,0 };
-	static const Quaternion BACK_Z{ 0,0,1,0 };
+	static const Quaternion IDENTITY{ 0,0,0,1 }; // 回転なし
+	static const Quaternion BACK_X{ 1,0,0,0 }; // X軸に180度回転する
+	static const Quaternion BACK_Y{ 0,1,0,0 }; // Y軸に180度回転する
+	static const Quaternion BACK_Z{ 0,0,1,0 }; // Z軸に180度回転する
 };
 
+/// <summary>
+/// ベクトルにQuaternion回転を適用する
+/// </summary>
+/// <param name="vector">元のベクトル</param>
+/// <param name="quaternion">回転Quaternion</param>
+/// <returns></returns>
 const Vector3 operator*(const Vector3& vector, const Quaternion& quaternion);
