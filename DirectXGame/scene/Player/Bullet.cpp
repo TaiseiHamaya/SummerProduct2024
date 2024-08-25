@@ -2,13 +2,13 @@
 
 #include <GameTimer.h>
 
-void Bullet::initialize(const Vector3& position, const Vector3& direction_, const std::shared_ptr<Model>& model_) {
+void Bullet::initialize(const Vector3& position, const Vector3& direction_, float speed_) {
 	GameObject::initialize();
-	model = model_;
 	direction = direction_.normalize_safe();
 	transform.set_translate(position);
 	isDead = false;
 	lifeTime = 10.0f;
+	speed = speed_;
 }
 
 void Bullet::update() {
@@ -17,11 +17,5 @@ void Bullet::update() {
 		isDead = true;
 	}
 
-	constexpr float SPEED = 9.0f;
-
-	transform.plus_translate(direction * SPEED * GameTimer::DeltaTime());
-}
-
-bool Bullet::is_dead() const {
-	return isDead;
+	transform.plus_translate(direction * speed * GameTimer::DeltaTime());
 }

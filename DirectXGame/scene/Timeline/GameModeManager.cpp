@@ -10,21 +10,21 @@
 
 void GameModeManager::initialize() {
 #ifdef _DEBUG
-	gameMode = GameMode::DEBUG_;
+	nowMode = GameMode::DEBUG_;
 #else
-	gameMode = GameMode::NANE;
+	nowMode = GameMode::NANE;
 #endif // _DEBUG
 }
 
 void GameModeManager::update() {
-	if (gameMode == GameMode::TRANSITION) {
+	if (nowMode == GameMode::TRANSITION) {
 		transitionData.timer += GameTimer::DeltaTime();
 		if (transitionData.transitionTime <= transitionData.timer) {
 			camera->get_transform().set_rotate(transitionData.afterCameraQuaternion);
 			playerMoveStateFunc(&transitionData);
-			gameMode = transitionData.nextMode;
+			nowMode = transitionData.nextMode;
 			transitionData.isTransitioning = false;
-			Log(std::format("[GameModeManager] Set GameMode : {}\n", static_cast<int>(gameMode)));
+			Log(std::format("[GameModeManager] Set GameMode : {}\n", static_cast<int>(nowMode)));
 			return;
 		}
 		camera->get_transform().set_rotate(
@@ -35,14 +35,14 @@ void GameModeManager::update() {
 			)
 		);
 	}
-	else if (gameMode == GameMode::VERTICAL || gameMode == GameMode::SIDE || gameMode == GameMode::OMNIDIRECTIONAL) {
+	else if (nowMode == GameMode::VERTICAL || nowMode == GameMode::SIDE || nowMode == GameMode::OMNIDIRECTIONAL) {
 		
 	}
 #ifdef _DEBUG
-	else if (gameMode == GameMode::DEBUG_) {
+	else if (nowMode == GameMode::DEBUG_) {
 
 	}
-	else if (gameMode == GameMode::EDITOR_) {
+	else if (nowMode == GameMode::EDITOR_) {
 
 	}
 #endif // _DEBUG
@@ -74,9 +74,9 @@ void GameModeManager::game_mode_command(std::istringstream& command) {
 
 	transitionData.isTransitioning = true;
 
-	gameMode = GameMode::TRANSITION;
+	nowMode = GameMode::TRANSITION;
 
-	Log(std::format("[GameModeManager] Set GameMode : {}\n", static_cast<int>(gameMode)));
+	Log(std::format("[GameModeManager] Set GameMode : {}\n", static_cast<int>(nowMode)));
 }
 
 void GameModeManager::set_player_func(std::function<void(TransitionData*)> func) {
@@ -91,13 +91,17 @@ void GameModeManager::set_next_angle(Vector3&& angle) {
 	transitionData.afterCameraQuaternion = Quaternion::EulerDegree(angle);
 }
 
+GameMode GameModeManager::get_mode() const {
+	return nowMode;
+}
+
 #ifdef _DEBUG
 
 #include <imgui.h>
 
 void GameModeManager::debug_gui() {
 	ImGui::Begin("GameMode");
-	ImGui::Text("GameMode : %d", static_cast<int>(gameMode));
+	ImGui::Text("GameMode : %d", static_cast<int>(nowMode));
 	ImGui::End();
 }
 #endif // _DEBUG

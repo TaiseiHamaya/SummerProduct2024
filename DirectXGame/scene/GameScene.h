@@ -14,7 +14,7 @@
 #include "Player/Player.h"
 #include "RailField/RailField.h"
 #include "Player/Bullet.h"
-#include "Enemy/Enemy.h"
+#include "Enemy/EnemyManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -49,7 +49,7 @@ public: // メンバ関数
 
 public:
 	void add_player_bullet();
-	void add_enemy(std::istringstream& movementFile);
+	void add_enemy_bullet(const Vector3& position, const Vector3& direction);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -62,7 +62,8 @@ private: // メンバ変数
 	uint32_t textureHandle = 0;
 	std::shared_ptr<Model> playerModel;
 	std::shared_ptr<Model> skydomeModel;
-	std::shared_ptr<Model> bulletModel;
+	std::shared_ptr<Model> playerBulletModel;
+	std::shared_ptr<Model> enemyBulletModel;
 
 	std::unique_ptr<GazerCamera> camera;
 
@@ -72,5 +73,6 @@ private: // メンバ変数
 
 	std::unique_ptr<Player> player;
 	std::list<Bullet> playerBullets;
-	std::list<Enemy> enemies;
+	std::unique_ptr<EnemyManager> enemyManager;
+	std::list<Bullet> enemyBullets;
 };

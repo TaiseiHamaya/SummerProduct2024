@@ -6,7 +6,7 @@
 #include <TimedCall.h>
 
 class GameModeManager;
-class Enemy;
+class BaseEnemy;
 
 class GameTimeline {
 public:
@@ -17,12 +17,10 @@ public:
 
 	void next_command();
 
-	void wait_command(std::istringstream& lineStream);
-
 public:
-	void set_spawn_func(std::function<void(std::istringstream&)> spawnFunction_);
+	void set_spawn_func(std::function<void(const std::string&)> spawnFunction_);
 	void set_mode(GameModeManager* gameMode_);
-	void set_enemies(const std::list<Enemy>* enemies);
+	void set_enemies(const std::list<std::unique_ptr<BaseEnemy>>* enemies);
 
 private:
 	GameModeManager* gameMode;
@@ -30,8 +28,8 @@ private:
 	std::stringstream timelineCommand;
 	TimedCall<void(void)> commandCall;
 
-	std::function<void(std::istringstream&)> spawnFunc;
+	std::function<void(const std::string&)> spawnFunc;
 
 	bool isWaitKillALL;
-	const std::list<Enemy>* enemyList;
+	const std::list<std::unique_ptr<BaseEnemy>>* enemyList;
 };

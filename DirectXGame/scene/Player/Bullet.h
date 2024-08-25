@@ -11,16 +11,13 @@ private:
 	using GameObject::initialize;
 
 public:
-	void initialize(const Vector3& position, const Vector3& direction, const std::shared_ptr<Model>& model_);
+	void initialize(const Vector3& position, const Vector3& direction, float speed);
 	void update() override;
-
-public:
-	bool is_dead() const;
 
 private:
 	Vector3 direction;
+	float speed;
 
 	float lifeTime;
-	bool isDead;
 };
 

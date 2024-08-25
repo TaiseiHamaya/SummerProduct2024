@@ -3,7 +3,6 @@
 #include <cassert>
 #include <functional>
 
-#include "TextureManager.h"
 #include "AxisIndicator.h"
 #include "Sprite.h"
 
@@ -28,7 +27,8 @@ void GameScene::Initialize() {
 
 	// いろいろ
 	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
-	bulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("bullet", true));
+	playerBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("bullet", true));
+	enemyBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("bullet", true));
 	//skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 
 	field = std::make_unique<RailField>();
@@ -51,7 +51,8 @@ void GameScene::Initialize() {
 	// プレイヤー
 	player = std::make_unique<Player>();
 	player->initialize();
-	player->default_data(playerModel, { 0,0,0 });
+	player->default_data({ 0,0,0 });
+	player->set_model(playerModel);
 	player->set_parent(*field);
 	player->set_attack_func(std::bind(&GameScene::add_player_bullet, this));
 	player->set_camera(camera.get());
@@ -59,12 +60,24 @@ void GameScene::Initialize() {
 	gameModeManager = std::make_unique<GameModeManager>();
 	gameModeManager->initialize();
 	gameModeManager->set_camera(camera.get());
-	gameModeManager->set_player_func(std::bind(&Player::set_move_state, player.get(), std::placeholders::_1));
+	gameModeManager->set_player_func(
+		std::bind(&Player::set_move_state, player.get(), std::placeholders::_1)
+	);
+
+	enemyManager = std::make_unique<EnemyManager>();
+	enemyManager->initialize();
+	enemyManager->set_field(*field);
+	enemyManager->set_attack_function(
+		std::bind(&GameScene::add_enemy_bullet, this, std::placeholders::_1, std::placeholders::_2)
+	);
+	enemyManager->set_game_mode_manager(gameModeManager.get());
 
 	timeline = std::make_unique<GameTimeline>();
 	timeline->set_mode(gameModeManager.get());
-	timeline->set_spawn_func(std::bind(&GameScene::add_enemy, this, std::placeholders::_1));
-	timeline->set_enemies(&enemies);
+	timeline->set_spawn_func(
+		std::bind(&EnemyManager::load_pop_file, enemyManager.get(), std::placeholders::_1)
+	);
+	timeline->set_enemies(&enemyManager->enemy_list());
 	timeline->load("./Resources/timeline/Timeline.csv");
 
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
@@ -108,13 +121,13 @@ void GameScene::Update() {
 	for (auto&& itr = playerBullets.begin(); itr != playerBullets.end(); ++itr) {
 		itr->update();
 	}
+	for (auto&& itr = enemyBullets.begin(); itr != enemyBullets.end(); ++itr) {
+		itr->update();
+	}
+	enemyManager->update();
 
-	playerBullets.remove_if([](const Bullet& bullet) {
-		if (bullet.is_dead()) {
-			return true;
-		}
-		return false;
-		});
+	playerBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
+	enemyBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
 
 	field->begin_rendering();
 	camera->begin_rendering();
@@ -122,6 +135,10 @@ void GameScene::Update() {
 	for (auto&& itr = playerBullets.begin(); itr != playerBullets.end(); ++itr) {
 		itr->begin_rendering();
 	}
+	for (auto&& itr = enemyBullets.begin(); itr != enemyBullets.end(); ++itr) {
+		itr->begin_rendering();
+	}
+	enemyManager->begin_rendering();
 }
 
 void GameScene::Draw() {
@@ -154,6 +171,10 @@ void GameScene::Draw() {
 	for (auto&& itr = playerBullets.begin(); itr != playerBullets.end(); ++itr) {
 		itr->draw();
 	}
+	for (auto&& itr = enemyBullets.begin(); itr != enemyBullets.end(); ++itr) {
+		itr->draw();
+	}
+	enemyManager->draw();
 
 #ifdef _DEBUG
 	field->debug_draw();
@@ -181,12 +202,14 @@ void GameScene::add_player_bullet() {
 	playerBullets.emplace_back();
 	auto&& newBullet = playerBullets.back();
 	Vector3 direction = Transform3D::HomogeneousVector(CVector3::BASIS_Z, player->world_matrix());
-	newBullet.initialize(player->get_position(), direction, bulletModel);
+	newBullet.initialize(player->get_position(), direction, 9.0f);
+	newBullet.set_model(playerBulletModel);
 }
 
-void GameScene::add_enemy([[maybe_unused]] std::istringstream& movementFile) {
-	enemies.emplace_back();
-	auto&& newEnemy = enemies.back();
-	newEnemy.initialize();
-	//newEnemy.load_move(movementFile);
+void GameScene::add_enemy_bullet(const Vector3& position, const Vector3& direction) {
+	enemyBullets.emplace_back();
+	auto&& newBullet = enemyBullets.back();
+	newBullet.initialize(position, direction, 5.0f);
+	newBullet.set_model(enemyBulletModel);
+
 }

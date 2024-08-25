@@ -24,6 +24,10 @@ void GameObject::draw(const ViewProjection& viewProjection) const {
 	}
 }
 
+bool GameObject::is_dead() const {
+	return isDead;
+}
+
 Vector3 GameObject::get_position() const {
 	return Transform3D::ExtractPosition(hierarchy.matWorld_);
 }
@@ -38,6 +42,10 @@ Transform3D& GameObject::get_transform() {
 
 const Matrix4x4& GameObject::world_matrix() const {
 	return hierarchy.matWorld_;
+}
+
+void GameObject::set_model(const std::shared_ptr<Model>& model_) {
+	model = model_;
 }
 
 void GameObject::set_parent(const GameObject& rhs) {
