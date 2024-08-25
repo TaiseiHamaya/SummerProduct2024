@@ -1,0 +1,158 @@
+#include "BaseEnemy.h"
+
+#include <fstream>
+
+#include <Utility.h>
+#include <Definition.h>
+
+#include <Timeline/GameModeManager.h>
+#include <Enemy/EnemyMoveState/EnemyMoveStop.h>
+#include <Enemy/EnemyMoveState/EnemyMoveLinear.h>
+#include <Enemy/EnemyMoveState/EnemyMoveCircular.h>
+
+void BaseEnemy::initialize() {
+	GameObject::initialize();
+
+	attackCall = {
+		std::bind(&BaseEnemy::attack, this), 1
+	};
+	moveCall = {
+		std::bind(&BaseEnemy::next_command, this), 0
+	};
+
+	isAttack = false;
+	isDead = false;
+
+	moveState = std::make_unique<EnemyMoveStop>();
+}
+
+void BaseEnemy::update() {
+	moveCall.update();
+	if (isAttack) {
+		attackCall.update();
+	}
+	moveState->update();
+}
+
+void BaseEnemy::load_move(const std::string& fileName) {
+	std::ifstream file{};
+	file.open("./Resources/timeline/Enemy/MovementsFile/" + fileName);
+	if (!file.is_open()) {
+		Log(std::format("[Enemy] Movements file \'{}\' is not found.", fileName));
+		return;
+	}
+
+	moveCommand << file.rdbuf();
+
+	file.close();
+}
+
+void BaseEnemy::next_command() {
+	std::string line;
+	while (std::getline(moveCommand, line)) {
+		std::istringstream lineStream{ line };
+		std::string word;
+
+		std::getline(lineStream, word, ',');
+
+		if (word.empty() || word.starts_with("//")) {
+			continue;
+		}
+		else if (word == "MOVE") {
+			create_move(lineStream);
+		}
+		else if (word == "SHOT") {
+			std::getline(lineStream, word, ',');
+			if (word == "YES") {
+				isAttack = true;
+			}
+			else if (word == "NO") {
+				isAttack = false;
+			}
+		}
+		else if (word == "WAIT") {
+			std::getline(lineStream, word, ',');
+			moveCall.restart(std::stof(word));
+			break;
+		}
+		else if (word == "DESTROY") {
+			isDead = true;
+		}
+	}
+}
+
+void BaseEnemy::create_move(std::istringstream& command) {
+	std::string word;
+
+	std::getline(command, word, ',');
+
+	if (word == "STOP") {
+		moveState = std::make_unique<EnemyMoveStop>();
+	}
+	else if (word == "LINEAR") {
+		auto&& newState = std::make_unique<EnemyMoveLinear>();
+		Vector2 base;
+		std::getline(command, word, ',');
+		base.x = std::stof(word);
+		std::getline(command, word, ',');
+		base.y = std::stof(word);
+		std::getline(command, word, ',');
+		float speed = std::stof(word);
+
+		Vector3 moveDirection;
+		auto nowGameMode = modeManager->get_mode();
+		if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
+			moveDirection = { base.x, 0, base.y };
+		}
+		else if (nowGameMode == GameMode::SIDE) {
+			moveDirection = { 0, base.y, base.x };
+		}
+
+		newState->initialize(moveDirection, speed);
+		moveState = std::move(newState);
+	}
+	else if (word == "CIRCULAR") {
+		auto&& newState = std::make_unique<EnemyMoveCircular>();
+		Vector2 base;
+		std::getline(command, word, ',');
+		base.x = std::stof(word);
+		std::getline(command, word, ',');
+		base.y = std::stof(word);
+		std::getline(command, word, ',');
+		float degree = std::stof(word);
+
+		Vector3 moveDirection;
+		Vector3 axis;
+		auto nowGameMode = modeManager->get_mode();
+		if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
+			moveDirection = { base.x, 0, base.y };
+			axis = CVector3::BASIS_Y;
+		}
+		else if (nowGameMode == GameMode::SIDE) {
+			moveDirection = { 0, base.y, base.x };
+			axis = CVector3::BASIS_X;
+		}
+
+		newState->initialize(moveDirection, axis, degree * ToRadian);
+		moveState = std::move(newState);
+	}
+	moveState->set_enemy(this);
+}
+
+void BaseEnemy::attack() {
+	Vector3 forward = Transform3D::HomogeneousVector(CVector3::BASIS_Z, hierarchy.matWorld_);
+	attackFunction(get_position(), forward);
+	attackCall.restart(1);
+}
+
+void BaseEnemy::set_attack_func(const std::function<void(const Vector3&, const Vector3&)>& func) {
+	attackFunction = func;
+}
+
+void BaseEnemy::set_game_mode_manager(const GameModeManager* manager) {
+	modeManager = manager;
+}
+
+std::unique_ptr<BaseEnemy> BaseEnemy::Create() {
+	return std::make_unique<BaseEnemy>();
+}

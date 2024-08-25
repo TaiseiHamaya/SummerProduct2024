@@ -43,11 +43,12 @@ void GameTimeline::next_command() {
 
 		std::getline(lineStream, word, ',');
 
-		if (word == "//") {
+		if (word.empty() || word.starts_with("//")) {
 			continue;
 		}
 		else if (word == "POP") {
-			spawnFunc(lineStream);
+			std::getline(lineStream, word, ',');
+			spawnFunc(word);
 		}
 		else if (word == "WAIT") {
 			std::getline(lineStream, word, ',');
@@ -79,10 +80,7 @@ void GameTimeline::next_command() {
 	}
 }
 
-void GameTimeline::wait_command([[maybe_unused]] std::istringstream& lineStream) {
-}
-
-void GameTimeline::set_spawn_func(std::function<void(std::istringstream&)> spawnFunction_) {
+void GameTimeline::set_spawn_func(std::function<void(const std::string&)> spawnFunction_) {
 	spawnFunc = spawnFunction_;
 }
 
@@ -90,7 +88,7 @@ void GameTimeline::set_mode(GameModeManager* gameMode_) {
 	gameMode = gameMode_;
 }
 
-void GameTimeline::set_enemies(const std::list<Enemy>* enemies) {
+void GameTimeline::set_enemies(const std::list<std::unique_ptr<BaseEnemy>>* enemies) {
 	enemyList = enemies;
 }
 

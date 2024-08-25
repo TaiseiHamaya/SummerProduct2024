@@ -75,8 +75,7 @@ void Player::attack() {
 	}
 }
 
-void Player::default_data(const std::shared_ptr<Model>& model_, Vector3&& position) {
-	model = model_;
+void Player::default_data(Vector3&& position) {
 	transform.set_translate(position);
 }
 

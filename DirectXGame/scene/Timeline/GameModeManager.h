@@ -6,14 +6,14 @@
 #include <Quaternion.h>
 
 enum class GameMode {
-	NANE,
-	VERTICAL,
-	SIDE,
-	OMNIDIRECTIONAL,
-	TRANSITION,
+	NANE = 0,
+	VERTICAL = 1 << 1,
+	SIDE = 1 << 2,
+	OMNIDIRECTIONAL = 1 << 3,
+	TRANSITION = 1 << 4,
 #ifdef _DEBUG
-	DEBUG_,
-	EDITOR_
+	DEBUG_ = 1 << 5,
+	EDITOR_ = 1 << 6
 #endif // _DEBUG
 };
 
@@ -45,6 +45,7 @@ public:
 	void set_player_func(std::function<void(TransitionData*)> func);
 	void set_camera(Camera3D* camera);
 	void set_next_angle(Vector3&& angle);
+	GameMode get_mode() const;
 
 #ifdef _DEBUG
 public:
@@ -52,7 +53,7 @@ public:
 #endif // _DEBUG
 
 private:
-	GameMode gameMode;
+	GameMode nowMode;
 
 	TransitionData transitionData;
 

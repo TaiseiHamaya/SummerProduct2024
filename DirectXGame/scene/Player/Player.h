@@ -10,7 +10,6 @@
 class Input;
 class Camera3D;
 struct TransitionData;
-enum class GameMode;
 
 class Player : public GameObject {
 public: // コンストラクタ
@@ -24,7 +23,7 @@ public: // publicメンバ関数
 	void attack();
 
 public:
-	void default_data(const std::shared_ptr<Model>& model_, Vector3&& position);
+	void default_data(Vector3&& position);
 	void set_move_state(TransitionData* transitionData);
 	void set_attack_func(const std::function<void(void)>& func);
 	void set_camera(Camera3D* camera_);
