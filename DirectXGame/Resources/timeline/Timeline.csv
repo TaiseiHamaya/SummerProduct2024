@@ -6,12 +6,13 @@
 // unimplement DONTUSE OFFSET,cameraOffsetX,Y,Z -> Next transition use
 
 ANGLE,30,0,0
-//OFFSET,0,0,-10,
+OFFSET,0,0,-10,
 MODE,VERTICAL,3
 WAIT,TIME,3
 POP,poptest.csv
 WAIT,KILL_ALL
 ANGLE,20,30,0
+OFFSET,0,0,-40,
 MODE,OMNIDIRECTIONAL,3,
 WAIT,TIME,3
 POP,poptest.csv

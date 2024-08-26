@@ -8,6 +8,7 @@ public:
 
 public:
 	void set_offset(const Vector3& offset_);
+	const Vector3& get_offset() const;
 
 #ifdef _DEBUG
 	void debug_gui() override;

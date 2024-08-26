@@ -20,6 +20,8 @@ GameScene::GameScene() = default;
 GameScene::~GameScene() = default;
 
 void GameScene::Initialize() {
+	WinApp::GetInstance()->SetSizeChangeMode(WinApp::SizeChangeMode::kNone);
+
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	input_->SetJoystickDeadZone(0, 0, 0);

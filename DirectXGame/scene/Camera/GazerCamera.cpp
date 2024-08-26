@@ -8,6 +8,10 @@ void GazerCamera::set_offset(const Vector3& offset_) {
 	offset = offset_;
 }
 
+const Vector3& GazerCamera::get_offset() const {
+	return offset;
+}
+
 #ifdef _DEBUG
 
 #include <imgui.h>

@@ -17,7 +17,7 @@ enum class GameMode {
 #endif // _DEBUG
 };
 
-class Camera3D;
+class GazerCamera;
 
 struct TransitionData {
 	float transitionTime;
@@ -26,6 +26,8 @@ struct TransitionData {
 	bool isTransitioning;
 	Quaternion beginCameraQuaternion;
 	Quaternion afterCameraQuaternion;
+	Vector3 beginOffset;
+	Vector3 afterOffset;
 
 	float parametric() {
 		return timer / transitionTime;
@@ -43,8 +45,9 @@ public:
 
 public:
 	void set_player_func(std::function<void(TransitionData*)> func);
-	void set_camera(Camera3D* camera);
+	void set_camera(GazerCamera* camera);
 	void set_next_angle(Vector3&& angle);
+	void set_next_offset(Vector3&& offset);
 	GameMode get_mode() const;
 
 #ifdef _DEBUG
@@ -57,6 +60,6 @@ private:
 
 	TransitionData transitionData;
 
-	Camera3D* camera;
+	GazerCamera* camera;
 	std::function<void(TransitionData*)> playerMoveStateFunc;
 };

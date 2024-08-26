@@ -77,6 +77,17 @@ void GameTimeline::next_command() {
 
 			gameMode->set_next_angle(std::move(degree));
 		}
+		else if (word == "OFFSET") {
+			Vector3 offset;
+			std::getline(lineStream, word, ',');
+			offset.x = std::stof(word);
+			std::getline(lineStream, word, ',');
+			offset.y = std::stof(word);
+			std::getline(lineStream, word, ',');
+			offset.z = std::stof(word);
+
+			gameMode->set_next_offset(std::move(offset));
+		}
 	}
 }
 
