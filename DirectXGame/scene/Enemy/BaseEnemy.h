@@ -40,13 +40,14 @@ public:
 	void set_game_mode_manager(const GameModeManager* manager);
 
 public:
-	void on_collision();
+	void on_collision(const BaseCollider* collider_);
 
 public:
 	static std::unique_ptr<BaseEnemy> Create();
 
 protected: // メンバ変数
 	bool isAttack;
+	int hitpoint;
 	
 	std::unique_ptr<BaseEnemyMoveState> moveState;
 	const GameModeManager* modeManager;

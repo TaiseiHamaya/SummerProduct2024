@@ -2,6 +2,8 @@
 
 #include <GameTimer.h>
 
+#include <Collision/SphereCollider.h>
+
 void Bullet::initialize(const Vector3& position, const Vector3& direction_, float speed_) {
 	GameObject::initialize();
 	direction = direction_.normalize_safe();
@@ -9,6 +11,12 @@ void Bullet::initialize(const Vector3& position, const Vector3& direction_, floa
 	isDead = false;
 	lifeTime = 10.0f;
 	speed = speed_;
+
+	auto tempCollider = std::make_shared<SphereCollider>();
+	tempCollider->set_matrix(hierarchy.matWorld_);
+	tempCollider->set_callback(std::bind(&Bullet::on_collision, this, std::placeholders::_1));
+	tempCollider->set_radius(1.0f);
+	collider = std::move(tempCollider);
 }
 
 void Bullet::update() {
@@ -18,4 +26,8 @@ void Bullet::update() {
 	}
 
 	transform.plus_translate(direction * speed * GameTimer::DeltaTime());
+}
+
+void Bullet::on_collision([[maybe_unused]] const BaseCollider* collider_) {
+	isDead = true;
 }

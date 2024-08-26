@@ -97,8 +97,11 @@
     <Filter Include="ソース ファイル\scene\timeline">
       <UniqueIdentifier>{a5e90240-5545-4cb5-a29b-a36e738ad5f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\scene\system">
-      <UniqueIdentifier>{b7923aaa-e830-4709-a916-a228f0a16aca}</UniqueIdentifier>
+    <Filter Include="ヘッダー ファイル\scene\collision">
+      <UniqueIdentifier>{b16809c8-9778-4efb-9167-0df8f924e04a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\scene\collision">
+      <UniqueIdentifier>{f3e28b24-5a43-4b9d-b757-242ae1f035eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +212,15 @@
     </ClCompile>
     <ClCompile Include="scene\Enemy\EnemyMoveState\EnemyMoveCircular.cpp">
       <Filter>ソース ファイル\scene\enemy\enemyState</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Collision\BaseCollider.cpp">
+      <Filter>ソース ファイル\scene\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Collision\CollisionManager.cpp">
+      <Filter>ソース ファイル\scene\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Collision\SphereCollider.cpp">
+      <Filter>ソース ファイル\scene\collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +400,15 @@
     </ClInclude>
     <ClInclude Include="scene\Enemy\EnemyMoveState\EnemyMoveCircular.h">
       <Filter>ヘッダー ファイル\scene\enemy\enemyState</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Collision\SphereCollider.h">
+      <Filter>ヘッダー ファイル\scene\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Collision\CollisionManager.h">
+      <Filter>ヘッダー ファイル\scene\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Collision\BaseCollider.h">
+      <Filter>ヘッダー ファイル\scene\collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,8 @@
 #include <Player/MoveState/VerticalMove.h>
 #include <Player/MoveState/TransitionMove.h>
 
+#include <Collision/SphereCollider.h>
+
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
@@ -29,6 +31,12 @@ void Player::initialize() {
 
 	input = Input::GetInstance();
 	velocity = CVector3::ZERO;
+
+	auto tempCollider = std::make_shared<SphereCollider>();
+	tempCollider->set_matrix(hierarchy.matWorld_);
+	tempCollider->set_callback(std::bind(&Player::on_collision, this, std::placeholders::_1));
+	tempCollider->set_radius(1.0f);
+	collider = std::move(tempCollider);
 }
 
 void Player::update() {
@@ -135,7 +143,7 @@ void Player::set_camera(Camera3D* camera_) {
 	camera = camera_;
 }
 
-void Player::on_collision() {
+void Player::on_collision([[maybe_unused]] const BaseCollider* collider_) {
 	// do nothing
 }
 

@@ -10,6 +10,8 @@
 #include <Enemy/EnemyMoveState/EnemyMoveLinear.h>
 #include <Enemy/EnemyMoveState/EnemyMoveCircular.h>
 
+#include <Collision/SphereCollider.h>
+
 void BaseEnemy::initialize() {
 	GameObject::initialize();
 
@@ -24,9 +26,21 @@ void BaseEnemy::initialize() {
 	isDead = false;
 
 	moveState = std::make_unique<EnemyMoveStop>();
+
+	auto tempCollider = std::make_shared<SphereCollider>();
+	tempCollider->set_matrix(hierarchy.matWorld_);
+	tempCollider->set_callback(std::bind(&BaseEnemy::on_collision, this, std::placeholders::_1));
+	tempCollider->set_radius(1.0f);
+	collider = std::move(tempCollider);
+
+	hitpoint = 5;
 }
 
 void BaseEnemy::update() {
+	if (hitpoint <= 0) {
+		isDead = true;
+	}
+
 	moveCall.update();
 	if (isAttack) {
 		attackCall.update();
@@ -151,6 +165,10 @@ void BaseEnemy::set_attack_func(const std::function<void(const Vector3&, const V
 
 void BaseEnemy::set_game_mode_manager(const GameModeManager* manager) {
 	modeManager = manager;
+}
+
+void BaseEnemy::on_collision([[maybe_unused]] const BaseCollider* collider_) {
+	--hitpoint;
 }
 
 std::unique_ptr<BaseEnemy> BaseEnemy::Create() {

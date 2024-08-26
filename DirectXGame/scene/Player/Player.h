@@ -29,7 +29,7 @@ public:
 	void set_camera(Camera3D* camera_);
 
 public:
-	void on_collision();
+	void on_collision(const BaseCollider* collider);
 
 public:
 #ifdef _DEBUG

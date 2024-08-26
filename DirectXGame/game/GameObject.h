@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <ViewProjection.h>
 #include <WorldTransform.h>
 #include <Model.h>
@@ -7,7 +9,7 @@
 #include <Transform3D.h>
 #include <Vector3.h>
 
-#include <memory>
+#include <Collision/BaseCollider.h>
 
 class GameObject {
 public:
@@ -33,6 +35,7 @@ public:
 	const Transform3D& get_transform() const;
 	Transform3D& get_transform();
 	const Matrix4x4& world_matrix() const;
+	std::weak_ptr<BaseCollider> get_collider() const;
 
 	void set_model(const std::shared_ptr<Model>& model_);
 	void set_parent(const GameObject& rhs);
@@ -42,6 +45,7 @@ protected:
 	Transform3D transform;
 	WorldTransform hierarchy;
 	std::shared_ptr<Model> model;
+	std::shared_ptr<BaseCollider> collider;
 
 public:
 	static void SetStaticViewProjection(const ViewProjection& viewProjection);

@@ -10,6 +10,7 @@
 
 #include <Timeline/GameModeManager.h>
 #include <Timeline/GameTimeline.h>
+#include <Collision/CollisionManager.h>
 
 #include "Player/Player.h"
 #include "RailField/RailField.h"
@@ -70,6 +71,7 @@ private: // メンバ変数
 	std::unique_ptr<RailField> field;
 	std::unique_ptr<GameTimeline> timeline;
 	std::unique_ptr<GameModeManager> gameModeManager;
+	std::unique_ptr<CollisionManager> collisionManager;
 
 	std::unique_ptr<Player> player;
 	std::list<Bullet> playerBullets;

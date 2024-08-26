@@ -125,6 +125,9 @@
     <ClCompile Include="math\Vector2.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="scene\Camera\GazerCamera.cpp" />
+    <ClCompile Include="scene\Collision\BaseCollider.cpp" />
+    <ClCompile Include="scene\Collision\CollisionManager.cpp" />
+    <ClCompile Include="scene\Collision\SphereCollider.cpp" />
     <ClCompile Include="scene\Enemy\BaseEnemy.cpp" />
     <ClCompile Include="scene\Enemy\EnemyManager.cpp" />
     <ClCompile Include="scene\Enemy\EnemyMoveState\BaseEnemyMoveState.cpp" />
@@ -186,6 +189,9 @@
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="scene\Camera\GazerCamera.h" />
+    <ClInclude Include="scene\Collision\BaseCollider.h" />
+    <ClInclude Include="scene\Collision\CollisionManager.h" />
+    <ClInclude Include="scene\Collision\SphereCollider.h" />
     <ClInclude Include="scene\Enemy\BaseEnemy.h" />
     <ClInclude Include="scene\Enemy\EnemyManager.h" />
     <ClInclude Include="scene\Enemy\EnemyMoveState\BaseEnemyMoveState.h" />

@@ -9,6 +9,8 @@
 #include <Camera3D.h>
 #include <GameTimer.h>
 
+#include <Enemy/BaseEnemy.h>
+
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
@@ -80,6 +82,8 @@ void GameScene::Initialize() {
 	timeline->set_enemies(&enemyManager->enemy_list());
 	timeline->load("./Resources/timeline/Timeline.csv");
 
+	collisionManager = std::make_unique<CollisionManager>();
+
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
 
 #ifdef _DEBUG
@@ -91,6 +95,8 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 	GameTimer::Update();
+
+	collisionManager->begin_flame();
 
 	timeline->update();
 
@@ -141,6 +147,24 @@ void GameScene::Update() {
 		itr->begin_rendering();
 	}
 	enemyManager->begin_rendering();
+
+	collisionManager->register_collider("Player", player->get_collider());
+	for (auto&& itr = playerBullets.begin(); itr != playerBullets.end(); ++itr) {
+		collisionManager->register_collider("PlayerBullet", itr->get_collider());
+	}
+	for (auto&& itr = enemyBullets.begin(); itr != enemyBullets.end(); ++itr) {
+		collisionManager->register_collider("EnemyBullet", itr->get_collider());
+	}
+	const auto& enemyList = enemyManager->enemy_list();
+	for (auto&& itr = enemyList.begin(); itr != enemyList.end(); ++itr) {
+		collisionManager->register_collider("Enemy", itr->get()->get_collider());
+	}
+
+	collisionManager->update();
+
+	collisionManager->collision("PlayerBullet", "EnemyBullet");
+	collisionManager->collision("Player", "EnemyBullet");
+	collisionManager->collision("PlayerBullet", "Enemy");
 }
 
 void GameScene::Draw() {

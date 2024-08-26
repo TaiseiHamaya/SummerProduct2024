@@ -44,6 +44,10 @@ const Matrix4x4& GameObject::world_matrix() const {
 	return hierarchy.matWorld_;
 }
 
+std::weak_ptr<BaseCollider> GameObject::get_collider() const {
+	return collider;
+}
+
 void GameObject::set_model(const std::shared_ptr<Model>& model_) {
 	model = model_;
 }
