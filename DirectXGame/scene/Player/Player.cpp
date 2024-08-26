@@ -51,8 +51,10 @@ void Player::update() {
 			moveState->input(joyState);
 		}
 
+		constexpr float MOVESPEED = 2.5f;
+
 		// 更新処理
-		velocity = moveState->velocity();
+		velocity = moveState->velocity() * MOVESPEED;
 		// velocity加算
 		transform.plus_translate(velocity * GameTimer::DeltaTime());
 

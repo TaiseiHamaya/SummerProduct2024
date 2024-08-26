@@ -1,6 +1,5 @@
 #include "GameScene.h"
 
-#include <cassert>
 #include <functional>
 
 #include "AxisIndicator.h"
