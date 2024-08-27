@@ -32,11 +32,11 @@ Vector3 TransitionMove::velocity() const {
 		// 縦, 見下ろしの場合はxz平面に戻す
 	case GameMode::VERTICAL:
 	case GameMode::OMNIDIRECTIONAL:
-		nextVelocity.y = -playerTransitionData.befor.get_translate().y / transitionData->transitionTime;
+		nextVelocity.y = transitionData->transitionTime ? -playerTransitionData.befor.get_translate().y / transitionData->transitionTime : 0;
 		break;
 		// 横の場合はyz平面に戻す
 	case GameMode::SIDE:
-		nextVelocity.x = -playerTransitionData.befor.get_translate().x / transitionData->transitionTime;
+		nextVelocity.x = transitionData->transitionTime ? -playerTransitionData.befor.get_translate().x / transitionData->transitionTime : 0;
 		break;
 #ifdef _DEBUG
 	case GameMode::DEBUG_:

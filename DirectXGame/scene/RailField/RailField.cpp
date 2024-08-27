@@ -14,9 +14,7 @@ void RailField::update() {
 	distance = Vector3::DotProduct(fieldNormal, transform.get_translate());
 	// imgui debug
 #ifdef _DEBUG
-	ImGui::SetNextWindowPos({ 20,500 }, ImGuiCond_Once);
-	ImGui::SetNextWindowSize(ImVec2{ 330,165 }, ImGuiCond_Once);
-	ImGui::Begin("Field", nullptr, ImGuiWindowFlags_NoSavedSettings);
+	ImGui::Begin("Field", nullptr);
 	transform.debug_gui();
 	ImGui::End();
 #endif // _DEBUG

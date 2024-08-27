@@ -7,6 +7,7 @@
 #include <Definition.h>
 
 #include <Enemy/BaseEnemy.h>
+#include <Enemy/FastEnemy.h>
 #include <Timeline/GameModeManager.h>
 
 EnemyManager::EnemyManager() = default;
@@ -109,7 +110,8 @@ const std::list<std::unique_ptr<BaseEnemy>>& EnemyManager::enemy_list() const {
 
 void EnemyManager::create_enemy_data() {
 	enemyData = {
-		 { "DEFAULT", EnemyData{std::shared_ptr<Model>(Model::Create()),&BaseEnemy::Create}}
+		 { "DEFAULT", EnemyData{std::shared_ptr<Model>(Model::Create()),&BaseEnemy::Create}},
+		 { "FAST", EnemyData{std::shared_ptr<Model>(Model::Create()),&FastEnemy::Create}},
 	};
 }
 

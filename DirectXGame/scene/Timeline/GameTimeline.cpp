@@ -7,24 +7,18 @@
 
 #include <Timeline/GameModeManager.h>
 
-void GameTimeline::load(const std::string& fileName) {
-	std::ifstream file{};
-	file.open(fileName);
-	if (!file.is_open()) {
-		Log(std::format("[Timeline] Timeline file \'{}\' is not found.", fileName));
-		return;
-	}
-
-	timelineCommand << file.rdbuf();
-
-	file.close();
-
-	commandCall = {
-		std::bind(&GameTimeline::next_command, this), 0
-	};
+void GameTimeline::initialize() {
+	load("./Resources/timeline/Timeline.csv");
 }
 
 void GameTimeline::update() {
+#ifdef _DEBUG
+	//auto nowGameMode = gameMode->get_mode();
+	if (!isUpdate) {
+		return;
+	}
+#endif // _DEBUG
+
 	if (isWaitKillALL) {
 		if (enemyList->empty()) {
 			next_command();
@@ -91,6 +85,30 @@ void GameTimeline::next_command() {
 	}
 }
 
+void GameTimeline::load(const std::string& fileName) {
+#ifdef _DEBUG
+	timelineFileName = fileName;
+#endif // _DEBUG
+
+	isWaitKillALL = false;
+
+	std::ifstream file{};
+	file.open(fileName);
+	if (!file.is_open()) {
+		Log(std::format("[Timeline] Timeline file \'{}\' is not found.", fileName));
+		return;
+	}
+
+	timelineCommand.clear();
+	timelineCommand << file.rdbuf();
+
+	file.close();
+
+	commandCall = {
+		std::bind(&GameTimeline::next_command, this), 0
+	};
+}
+
 void GameTimeline::set_spawn_func(std::function<void(const std::string&)> spawnFunction_) {
 	spawnFunc = spawnFunction_;
 }
@@ -112,6 +130,11 @@ void GameTimeline::debug_gui() {
 	ImGui::Text(std::format("IsWaitKillAll : {:s}({})", isWaitKillALL, enemyList->size()).c_str());
 	ImGui::Separator();
 	commandCall.debug_gui();
+	ImGui::Separator();
+	ImGui::Checkbox("Update", &isUpdate);
+	if (ImGui::Button("Reset timeline")) {
+		load(timelineFileName);
+	}
 	ImGui::End();
 }
 #endif // _DEBUG

@@ -7,7 +7,8 @@
 #include <memory>
 #include <TimedCall.h>
 
-class BaseEnemyMoveState;
+#include <Enemy/EnemyMoveState/BaseEnemyMoveState.h>
+
 class GameModeManager;
 
 class BaseEnemy : public GameObject {

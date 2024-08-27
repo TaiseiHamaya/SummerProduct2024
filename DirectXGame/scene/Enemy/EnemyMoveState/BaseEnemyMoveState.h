@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Enemy/BaseEnemy.h>
+class BaseEnemy;
 
 class BaseEnemyMoveState {
 public:

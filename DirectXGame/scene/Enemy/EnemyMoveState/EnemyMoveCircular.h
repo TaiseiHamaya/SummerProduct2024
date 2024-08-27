@@ -2,7 +2,7 @@
 
 #include <Enemy/EnemyMoveState/BaseEnemyMoveState.h>
 
-
+#include <Vector3.h>
 
 class EnemyMoveCircular : public BaseEnemyMoveState {
 public:

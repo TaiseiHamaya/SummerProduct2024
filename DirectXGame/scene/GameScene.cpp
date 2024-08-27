@@ -81,7 +81,7 @@ void GameScene::Initialize() {
 		std::bind(&EnemyManager::load_pop_file, enemyManager.get(), std::placeholders::_1)
 	);
 	timeline->set_enemies(&enemyManager->enemy_list());
-	timeline->load("./Resources/timeline/Timeline.csv");
+	timeline->initialize();
 
 	collisionManager = std::make_unique<CollisionManager>();
 

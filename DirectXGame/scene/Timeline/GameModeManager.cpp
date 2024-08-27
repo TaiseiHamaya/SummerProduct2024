@@ -35,7 +35,7 @@ void GameModeManager::update() {
 				std::min(transitionData.parametric(), 1.0f)
 			)
 		);
-		
+
 		if (transitionData.transitionTime <= transitionData.timer) {
 			playerMoveStateFunc(&transitionData);
 			nowMode = transitionData.nextMode;
@@ -57,23 +57,30 @@ void GameModeManager::update() {
 }
 
 void GameModeManager::game_mode_command(std::istringstream& command) {
-	std::string word;
-	std::getline(command, word, ',');
+	std::string mode;
+	std::string time;
+	std::getline(command, mode, ',');
+	std::getline(command, time, ',');
+
+	set_next_mode(mode, std::stof(time));
+}
+
+void GameModeManager::set_next_mode(const std::string& mode, float time) {
 	// 次のゲームモード
-	if (word == "VERTICAL") {
+	if (mode == "VERTICAL") {
 		transitionData.nextMode = GameMode::VERTICAL;
 	}
-	else if (word == "SIDE") {
+	else if (mode == "SIDE") {
 		transitionData.nextMode = GameMode::SIDE;
 	}
-	else if (word == "OMNIDIRECTIONAL") {
+	else if (mode == "OMNIDIRECTIONAL") {
 		transitionData.nextMode = GameMode::OMNIDIRECTIONAL;
 	}
 	else {
-		assert(false);
+		return;
 	}
-	std::getline(command, word, ',');
-	transitionData.transitionTime = std::stof(word); // 遷移にかかるフレーム
+
+	transitionData.transitionTime = time; // 遷移にかかるフレーム
 
 	transitionData.beginCameraQuaternion = camera->get_transform().get_quaternion();
 	transitionData.beginOffset = camera->get_offset();
@@ -86,6 +93,7 @@ void GameModeManager::game_mode_command(std::istringstream& command) {
 	nowMode = GameMode::TRANSITION;
 
 	Log(std::format("[GameModeManager] Set GameMode : {}\n", static_cast<int>(nowMode)));
+
 }
 
 void GameModeManager::set_player_func(std::function<void(TransitionData*)> func) {
@@ -111,10 +119,25 @@ GameMode GameModeManager::get_mode() const {
 #ifdef _DEBUG
 
 #include <imgui.h>
+#include <ranges>
 
 void GameModeManager::debug_gui() {
+	static const std::vector<std::pair<std::string, GameMode>> gameModeList{
+		{ "NANE", GameMode::NANE },
+		{ "VERTICAL",GameMode::VERTICAL },
+		{ "SIDE",GameMode::SIDE },
+		{ "OMNIDIRECTIONAL",GameMode::OMNIDIRECTIONAL},
+		{ "TRANSITION",GameMode::TRANSITION },
+		{ "DEBUG_",GameMode::DEBUG_ },
+		{ "EDITOR_",GameMode::EDITOR_ },
+	};
+
 	ImGui::Begin("GameMode");
-	ImGui::Text("GameMode : %d", static_cast<int>(nowMode));
+	for (const auto & list : gameModeList) {
+		if (ImGui::RadioButton(list.first.c_str(), list.second == nowMode)) {
+			set_next_mode(list.first, 0);
+		}
+	}
 	ImGui::End();
 }
 #endif // _DEBUG

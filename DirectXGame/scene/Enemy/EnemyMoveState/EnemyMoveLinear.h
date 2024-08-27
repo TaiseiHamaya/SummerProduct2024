@@ -2,6 +2,8 @@
 
 #include <Enemy/EnemyMoveState/BaseEnemyMoveState.h>
 
+#include <Vector3.h>
+
 class EnemyMoveLinear : public BaseEnemyMoveState {
 public:
 	EnemyMoveLinear() = default;

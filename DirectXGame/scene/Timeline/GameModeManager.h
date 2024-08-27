@@ -43,6 +43,9 @@ public:
 
 	void game_mode_command(std::istringstream& command);
 
+private:
+	void set_next_mode(const std::string& mode, float time);
+
 public:
 	void set_player_func(std::function<void(TransitionData*)> func);
 	void set_camera(GazerCamera* camera);

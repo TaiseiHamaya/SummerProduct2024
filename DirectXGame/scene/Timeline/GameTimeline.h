@@ -12,10 +12,13 @@ class GameTimeline {
 public:
 
 public:
-	void load(const std::string& fileName);
+	void initialize();
 	void update();
 
+
+private:
 	void next_command();
+	void load(const std::string& fileName);
 
 public:
 	void set_spawn_func(std::function<void(const std::string&)> spawnFunction_);
@@ -37,4 +40,9 @@ private:
 
 	bool isWaitKillALL;
 	const std::list<std::unique_ptr<BaseEnemy>>* enemyList;
+
+#ifdef _DEBUG
+	std::string timelineFileName;
+	bool isUpdate;
+#endif // _DEBUG
 };

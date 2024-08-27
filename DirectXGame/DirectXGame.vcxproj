@@ -134,6 +134,7 @@
     <ClCompile Include="scene\Enemy\EnemyMoveState\EnemyMoveCircular.cpp" />
     <ClCompile Include="scene\Enemy\EnemyMoveState\EnemyMoveLinear.cpp" />
     <ClCompile Include="scene\Enemy\EnemyMoveState\EnemyMoveStop.cpp" />
+    <ClCompile Include="scene\Enemy\FastEnemy.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\Player\Bullet.cpp" />
     <ClCompile Include="scene\Player\MoveState\BaseMoveState.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="scene\Enemy\EnemyMoveState\EnemyMoveCircular.h" />
     <ClInclude Include="scene\Enemy\EnemyMoveState\EnemyMoveLinear.h" />
     <ClInclude Include="scene\Enemy\EnemyMoveState\EnemyMoveStop.h" />
+    <ClInclude Include="scene\Enemy\FastEnemy.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\Player\Bullet.h" />
     <ClInclude Include="scene\Player\MoveState\BaseMoveState.h" />
