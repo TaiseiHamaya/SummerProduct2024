@@ -13,7 +13,7 @@ public:
 
 	void update();
 
-	bool is_finished();
+	bool is_finished() const;
 
 	void restart(float time);
 
@@ -44,7 +44,7 @@ inline void TimedCall<Type>::update() {
 }
 
 template<class Type>
-inline bool TimedCall<Type>::is_finished() {
+inline bool TimedCall<Type>::is_finished() const {
 	return isFinished;
 }
 

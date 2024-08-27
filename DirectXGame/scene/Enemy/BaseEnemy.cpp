@@ -101,7 +101,15 @@ void BaseEnemy::create_move(std::istringstream& command) {
 	std::getline(command, word, ',');
 
 	if (word == "STOP") {
-		moveState = std::make_unique<EnemyMoveStop>();
+		auto&& newState = std::make_unique<EnemyMoveStop>();
+		auto nowGameMode = modeManager->get_mode();
+		if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
+			newState->set_stop_mode(StopMode::LOOKAROUND);
+		}
+		else if (nowGameMode == GameMode::SIDE) {
+			newState->set_stop_mode(StopMode::UPDOWN);
+		}
+		moveState = std::move(newState);
 	}
 	else if (word == "LINEAR") {
 		auto&& newState = std::make_unique<EnemyMoveLinear>();

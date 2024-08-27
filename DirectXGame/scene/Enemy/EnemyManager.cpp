@@ -20,10 +20,19 @@ void EnemyManager::initialize() {
 }
 
 void EnemyManager::update() {
+	for (auto&& itr = enemyPopCommands.begin(); itr != enemyPopCommands.end(); ++itr) {
+		nowCommand = std::to_address(itr);
+		itr->call.update();
+	}
+	enemyPopCommands.remove_if(
+		[](const PopCommand& command) { return command.call.is_finished() && command.stream.eof(); }
+	);
 	for (auto&& itr = enemies.begin(); itr != enemies.end(); ++itr) {
 		itr->get()->update();
 	}
-	enemies.remove_if([](const std::unique_ptr<BaseEnemy>& enemy) { return enemy->is_dead(); });
+	enemies.remove_if(
+		[](const std::unique_ptr<BaseEnemy>& enemy) { return enemy->is_dead(); }
+	);
 }
 
 void EnemyManager::begin_rendering() {
@@ -46,51 +55,16 @@ void EnemyManager::load_pop_file(const std::string& fileName) {
 		return;
 	}
 
-	std::stringstream fileStream;
-	fileStream << file.rdbuf();
+	enemyPopCommands.emplace_back();
+	auto&& command = enemyPopCommands.back();
+
+	command.stream << file.rdbuf();
 
 	file.close();
 
-	std::string line;
-	while (std::getline(fileStream, line, '\n')) {
-		std::stringstream lineStream{ line };
-		std::string enemyTypeName;
-		std::getline(lineStream, enemyTypeName, ',');
-
-		if (enemyTypeName.empty() || enemyTypeName.starts_with("//")) {
-			continue;
-		}
-
-		std::string enemyFileName;
-		std::getline(lineStream, enemyFileName, ',');
-
-		std::string word;
-		Vector2 position2d;
-		std::getline(lineStream, word, ',');
-		position2d.x = std::stof(word);
-		std::getline(lineStream, word, ',');
-		position2d.y = std::stof(word);
-		float degree;
-		std::getline(lineStream, word, ',');
-		degree = std::stof(word);
-
-		Vector3 position;
-		Quaternion rotation;
-		auto nowGameMode =  gameModeManager->get_mode();
-		if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
-			position = { position2d.x, 0, position2d.y };
-			rotation = Quaternion::AngleAxis(CVector3::BASIS_Y, degree * ToRadian);
-		}
-		else if(nowGameMode == GameMode::SIDE){
-			position = { 0, position2d.y, position2d.x };
-			rotation = Quaternion::AngleAxis(CVector3::BASIS_X, degree * ToRadian);
-		}
-		else {
-			// do nothing
-		}
-
-		pop_enemy(enemyTypeName, enemyFileName, position, rotation);
-	}
+	command.call = { 
+		std::bind(&EnemyManager::next_pop_command, this), 0 
+	};
 }
 
 void EnemyManager::set_field(const GameObject& rhs) {
@@ -109,6 +83,56 @@ const std::list<std::unique_ptr<BaseEnemy>>& EnemyManager::enemy_list() const {
 	return enemies;
 }
 
+void EnemyManager::next_pop_command() {
+	std::string line;
+	while (std::getline(nowCommand->stream, line, '\n')) {
+		std::stringstream lineStream{ line };
+		std::string word;
+		std::getline(lineStream, word, ',');
+
+		if (word.empty() || word.starts_with("//")) {
+			continue;
+		}
+		else if (word == "WAIT") {
+			std::getline(lineStream, word, ',');
+			nowCommand->call.restart(std::stof(word));
+			break;
+		}
+		else if (word == "POP") {
+			std::string enemyTypeName;
+			std::getline(lineStream, enemyTypeName, ',');
+			std::string enemyFileName;
+			std::getline(lineStream, enemyFileName, ',');
+
+			Vector2 position2d;
+			std::getline(lineStream, word, ',');
+			position2d.x = std::stof(word);
+			std::getline(lineStream, word, ',');
+			position2d.y = std::stof(word);
+			float degree;
+			std::getline(lineStream, word, ',');
+			degree = std::stof(word);
+
+			Vector3 position;
+			Quaternion rotation;
+			auto nowGameMode = gameModeManager->get_mode();
+			if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
+				position = { position2d.x, 0, position2d.y };
+				rotation = Quaternion::AngleAxis(CVector3::BASIS_Y, degree * ToRadian);
+			}
+			else if (nowGameMode == GameMode::SIDE) {
+				position = { 0, position2d.y, position2d.x };
+				rotation = Quaternion::AngleAxis(CVector3::BASIS_X, degree * ToRadian);
+			}
+			else {
+				// do nothing
+			}
+
+			pop_enemy(enemyTypeName, enemyFileName, position, rotation);
+		}
+	}
+}
+
 void EnemyManager::create_enemy_data() {
 	enemyData = {
 		 { "DEFAULT", EnemyData{std::shared_ptr<Model>(Model::Create()),&BaseEnemy::Create}},
@@ -119,7 +143,7 @@ void EnemyManager::create_enemy_data() {
 
 void EnemyManager::pop_enemy(const std::string& enemyTypeName, const std::string& fileName, const Vector3& position, const Quaternion& rotation) {
 	assert(enemyData.contains(enemyTypeName));
-	
+
 	std::unique_ptr<BaseEnemy> newEnemy{ enemyData.at(enemyTypeName).createFunction() };
 
 	newEnemy->initialize();

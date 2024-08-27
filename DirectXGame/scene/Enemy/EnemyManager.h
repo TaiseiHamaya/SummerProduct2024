@@ -8,12 +8,19 @@
 
 #include <Model.h>
 #include <Quaternion.h>
+#include <TimedCall.h>
 
 class GameObject;
 class BaseEnemy;
 class GameModeManager;
 
 class EnemyManager {
+private:
+	struct PopCommand {
+		std::stringstream stream;
+		TimedCall<void(void)> call;
+	};
+
 public: // コンストラクタ
 	EnemyManager();
 	~EnemyManager();
@@ -33,6 +40,7 @@ public:
 	const std::list<std::unique_ptr<BaseEnemy>>& enemy_list() const;
 
 private:
+	void next_pop_command();
 	void create_enemy_data();
 	void pop_enemy(
 		const std::string& enemyTypeName, 
@@ -57,5 +65,8 @@ private: // メンバ変数
 	};
 	std::unordered_map<std::string, EnemyData> enemyData;
 	std::list<std::unique_ptr<BaseEnemy>> enemies;
+
+	PopCommand* nowCommand;
+	std::list<PopCommand> enemyPopCommands;
 };
 
