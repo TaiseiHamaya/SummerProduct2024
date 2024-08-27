@@ -99,6 +99,7 @@ void GameTimeline::load(const std::string& fileName) {
 		return;
 	}
 
+	timelineCommand.str("");
 	timelineCommand.clear();
 	timelineCommand << file.rdbuf();
 

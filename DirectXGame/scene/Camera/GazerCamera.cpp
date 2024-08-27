@@ -1,7 +1,7 @@
 #include "GazerCamera.h"
 
 void GazerCamera::update() {
-	transform.set_translate(offset * transform.get_quaternion().inverse());
+	transform.set_translate(offset * transform.get_quaternion());
 }
 
 void GazerCamera::set_offset(const Vector3& offset_) {

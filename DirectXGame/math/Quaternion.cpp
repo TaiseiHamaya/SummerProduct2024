@@ -64,7 +64,7 @@ bool Quaternion::operator!=(const Quaternion& rhs) const noexcept {
 }
 
 Quaternion Quaternion::operator*(const Quaternion& rhs) const noexcept {
-	Vector3 resultV = rhs.xyz * w + xyz * rhs.w + Vector3::CrossProduct(rhs.xyz, xyz);
+	Vector3 resultV = rhs.xyz * w + xyz * rhs.w + Vector3::CrossProduct(xyz, rhs.xyz);
 	return Quaternion{
 		resultV, w * rhs.w - Vector3::DotProduct(xyz, rhs.xyz)
 	};
@@ -134,7 +134,7 @@ const Quaternion Quaternion::FromToRotation(const Vector3& from, const Vector3& 
 			orthogonal = CVector3::BASIS_Y;
 		}
 		Vector3 axis = Vector3::CrossProduct(from, orthogonal).normalize();
-		return Quaternion{axis, 0};
+		return Quaternion{ axis, 0 };
 	}
 
 	Vector3 axis = Vector3::CrossProduct(from, to);
@@ -154,8 +154,8 @@ const Quaternion Quaternion::FromToRotation(const Vector3& from, const Vector3& 
 
 const Quaternion Quaternion::LookForward(const Vector3& forward, const Vector3& upwards) {
 	Quaternion lookRotation = FromToRotation(CVector3::BASIS_Z, forward);
-	Vector3 xAxisHorizontal = Vector3::CrossProduct(upwards, forward);
-	Vector3 yAxisAfterRotate = Vector3::CrossProduct(forward, xAxisHorizontal);
+	Vector3 xAxisHorizontal = Vector3::CrossProduct(upwards, forward).normalize_safe();
+	Vector3 yAxisAfterRotate = Vector3::CrossProduct(forward, xAxisHorizontal).normalize_safe();
 
 	Vector3 yAxisBeforeModify = CVector3::BASIS_Y * lookRotation;
 	Quaternion modifyRotation = FromToRotation(yAxisBeforeModify, yAxisAfterRotate);
@@ -193,5 +193,6 @@ const Quaternion Quaternion::Slerp(const Quaternion& internal, const Quaternion&
 }
 
 const Vector3 operator*(const Vector3& vector, const Quaternion& quaternion) {
-	return (quaternion * Quaternion{ vector, 0.0f } *quaternion.inverse()).xyz;
+	Quaternion vectorQuaternion = Quaternion{ vector, 0.0f };
+	return (quaternion * vectorQuaternion * quaternion.inverse()).xyz;
 }
