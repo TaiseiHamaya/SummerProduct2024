@@ -10,6 +10,8 @@
 
 #include <Enemy/BaseEnemy.h>
 
+#include <Enemy/ToPlayerEnemy.h>
+
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
@@ -90,6 +92,8 @@ void GameScene::Initialize() {
 	collisionManager = std::make_unique<CollisionManager>();
 
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
+
+	ToPlayerEnemy::SetTargetPlayer(player.get());
 
 #ifdef _DEBUG
 	AxisIndicator::GetInstance()->SetVisible(true);

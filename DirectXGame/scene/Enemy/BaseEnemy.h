@@ -24,7 +24,7 @@ public: // コンストラクタ
 
 public: // publicメンバ関数
 	void initialize() override;
-	void update() override;
+	virtual void update() override;
 
 	void load_move(const std::string& fileName);
 

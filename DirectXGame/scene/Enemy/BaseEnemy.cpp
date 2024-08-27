@@ -156,7 +156,7 @@ void BaseEnemy::create_move(std::istringstream& command) {
 void BaseEnemy::attack() {
 	Vector3 forward = Transform3D::HomogeneousVector(CVector3::BASIS_Z, hierarchy.matWorld_);
 	attackFunction(get_position(), forward);
-	attackCall.restart(1);
+	attackCall.restart(2);
 }
 
 void BaseEnemy::set_attack_func(const std::function<void(const Vector3&, const Vector3&)>& func) {
