@@ -60,6 +60,7 @@ void GameScene::Initialize() {
 	player->set_attack_func(std::bind(&GameScene::add_player_bullet, this));
 	player->set_camera(camera.get());
 
+	// GameModeManager
 	gameModeManager = std::make_unique<GameModeManager>();
 	gameModeManager->initialize();
 	gameModeManager->set_camera(camera.get());
@@ -67,6 +68,7 @@ void GameScene::Initialize() {
 		std::bind(&Player::set_move_state, player.get(), std::placeholders::_1)
 	);
 
+	// EnemyManager
 	enemyManager = std::make_unique<EnemyManager>();
 	enemyManager->initialize();
 	enemyManager->set_field(*field);
@@ -75,6 +77,7 @@ void GameScene::Initialize() {
 	);
 	enemyManager->set_game_mode_manager(gameModeManager.get());
 
+	// Timeline
 	timeline = std::make_unique<GameTimeline>();
 	timeline->set_mode(gameModeManager.get());
 	timeline->set_spawn_func(
@@ -83,6 +86,7 @@ void GameScene::Initialize() {
 	timeline->set_enemies(&enemyManager->enemy_list());
 	timeline->initialize();
 
+	// Collision
 	collisionManager = std::make_unique<CollisionManager>();
 
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
@@ -121,6 +125,8 @@ void GameScene::Update() {
 	timeline->debug_gui();
 
 	player->debug_gui();
+
+	enemyManager->debug_gui();
 #endif // _DEBUG
 
 	// 更新処理

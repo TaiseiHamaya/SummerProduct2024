@@ -21,8 +21,8 @@ void GameTimeline::update() {
 
 	if (isWaitKillALL) {
 		if (enemyList->empty()) {
-			next_command();
 			isWaitKillALL = false;
+			next_command();
 		}
 		return;
 	}

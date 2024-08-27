@@ -35,7 +35,7 @@ void Player::initialize() {
 	auto tempCollider = std::make_shared<SphereCollider>();
 	tempCollider->set_matrix(hierarchy.matWorld_);
 	tempCollider->set_callback(std::bind(&Player::on_collision, this, std::placeholders::_1));
-	tempCollider->set_radius(1.0f);
+	tempCollider->set_radius(0.5f);
 	collider = std::move(tempCollider);
 }
 
@@ -51,10 +51,8 @@ void Player::update() {
 			moveState->input(joyState);
 		}
 
-		constexpr float MOVESPEED = 2.5f;
-
 		// 更新処理
-		velocity = moveState->velocity() * MOVESPEED;
+		velocity = moveState->velocity();
 		// velocity加算
 		transform.plus_translate(velocity * GameTimer::DeltaTime());
 

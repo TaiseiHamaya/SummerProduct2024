@@ -41,6 +41,11 @@ private:
 		const Quaternion& rotation
 	);
 
+#ifdef _DEBUG
+public:
+	void debug_gui();
+#endif // _DEBUG
+
 private: // メンバ変数
 	const GameObject* field;
 	const GameModeManager* gameModeManager;

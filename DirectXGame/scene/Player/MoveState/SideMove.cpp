@@ -1,7 +1,7 @@
 #include "SideMove.h"
 
 Vector3 SideMove::velocity() const {
-	constexpr float MOVESPEED = 3.0f;
+	constexpr float MOVESPEED = 7.5f;
 
 	float sign = camera->get_position().x >= 0 ? 1.0f : -1.0f;
 

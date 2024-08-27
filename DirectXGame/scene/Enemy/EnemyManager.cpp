@@ -131,3 +131,16 @@ void EnemyManager::pop_enemy(const std::string& enemyTypeName, const std::string
 
 	enemies.push_back(std::move(newEnemy));
 }
+
+#ifdef _DEBUG
+
+void EnemyManager::debug_gui() {
+	ImGui::Begin("EnemyManager");
+	ImGui::Text("Enemy : %d", enemies.size());
+	if (ImGui::Button("Destroy all enemy")) {
+		enemies.clear();
+	}
+	ImGui::End();
+}
+
+#endif // _DEBUG

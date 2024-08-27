@@ -15,7 +15,7 @@ void Bullet::initialize(const Vector3& position, const Vector3& direction_, floa
 	auto tempCollider = std::make_shared<SphereCollider>();
 	tempCollider->set_matrix(hierarchy.matWorld_);
 	tempCollider->set_callback(std::bind(&Bullet::on_collision, this, std::placeholders::_1));
-	tempCollider->set_radius(1.0f);
+	tempCollider->set_radius(0.5f);
 	collider = std::move(tempCollider);
 }
 
