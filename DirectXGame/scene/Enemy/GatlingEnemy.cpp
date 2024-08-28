@@ -1,5 +1,12 @@
 #include "GatlingEnemy.h"
 
+#include <random>
+
+#include <Easing.h>
+#include <Definition.h>
+
+#include <Timeline/GameModeManager.h>
+
 void GatlingEnemy::initialize() {
 	BaseEnemy::initialize();
 	gatlingCall = {
@@ -19,7 +26,24 @@ void GatlingEnemy::reset_gatling() {
 			shotCount = 0;
 			attackCall.restart(3.0f);
 		}
+		static std::random_device seed_gen;
+		static std::mt19937 engine(seed_gen());
+
 		Vector3 forward = Transform3D::HomogeneousVector(CVector3::BASIS_Z, hierarchy.matWorld_);
+		float angle = Lerp(-10.0f * ToRadian, 10.0f * ToRadian, std::generate_canonical<float, std::numeric_limits<float>::digits>(engine));
+
+		auto nowMode = modeManager->get_mode();
+		if (nowMode == GameMode::TRANSITION) {
+			nowMode = modeManager->get_transition_data().nextMode;
+		}
+
+		if (nowMode == GameMode::VERTICAL || nowMode == GameMode::OMNIDIRECTIONAL) {
+			forward = forward * Quaternion::AngleAxis(CVector3::BASIS_Y, angle);
+		}
+		else if (nowMode == GameMode::SIDE) {
+			forward = forward * Quaternion::AngleAxis(CVector3::BASIS_X, angle);
+		}
+
 		attackFunction(get_position(), forward);
 		gatlingCall.restart(0.16f);
 	}

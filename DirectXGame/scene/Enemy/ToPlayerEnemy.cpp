@@ -6,6 +6,7 @@
 
 void ToPlayerEnemy::update() {
 	BaseEnemy::update();
+
 	Vector3 forward = (p_player->get_transform().get_translate() - transform.get_translate()).normalize_safe();
 	Quaternion lookRotation = Quaternion::LookForward(forward);
 	transform.set_rotate(
