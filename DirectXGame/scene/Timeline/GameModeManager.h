@@ -52,6 +52,7 @@ public:
 	void set_next_angle(Vector3&& angle);
 	void set_next_offset(Vector3&& offset);
 	GameMode get_mode() const;
+	const TransitionData& get_transition_data() const;
 
 #ifdef _DEBUG
 public:

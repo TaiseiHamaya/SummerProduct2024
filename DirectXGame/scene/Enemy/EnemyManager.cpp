@@ -116,6 +116,9 @@ void EnemyManager::next_pop_command() {
 			Vector3 position;
 			Quaternion rotation;
 			auto nowGameMode = gameModeManager->get_mode();
+			if (nowGameMode == GameMode::TRANSITION) {
+				nowGameMode = gameModeManager->get_transition_data().nextMode;
+			}
 			if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
 				position = { position2d.x, 0, position2d.y };
 				rotation = Quaternion::AngleAxis(CVector3::BASIS_Y, degree * ToRadian);

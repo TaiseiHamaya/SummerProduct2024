@@ -116,6 +116,10 @@ GameMode GameModeManager::get_mode() const {
 	return nowMode;
 }
 
+const TransitionData& GameModeManager::get_transition_data() const {
+	return transitionData;
+}
+
 #ifdef _DEBUG
 
 #include <imgui.h>

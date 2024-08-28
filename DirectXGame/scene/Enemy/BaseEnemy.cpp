@@ -100,9 +100,13 @@ void BaseEnemy::create_move(std::istringstream& command) {
 
 	std::getline(command, word, ',');
 
+	auto nowGameMode = modeManager->get_mode();
+	if (nowGameMode == GameMode::TRANSITION) {
+		nowGameMode = modeManager->get_transition_data().nextMode;
+	}
+
 	if (word == "STOP") {
 		auto&& newState = std::make_unique<EnemyMoveStop>();
-		auto nowGameMode = modeManager->get_mode();
 		if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
 			newState->set_stop_mode(StopMode::LOOKAROUND);
 		}
@@ -122,7 +126,6 @@ void BaseEnemy::create_move(std::istringstream& command) {
 		float speed = std::stof(word);
 
 		Vector3 moveDirection;
-		auto nowGameMode = modeManager->get_mode();
 		if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
 			moveDirection = { base.x, 0, base.y };
 		}
@@ -145,7 +148,6 @@ void BaseEnemy::create_move(std::istringstream& command) {
 
 		Vector3 moveDirection;
 		Vector3 axis;
-		auto nowGameMode = modeManager->get_mode();
 		if (nowGameMode == GameMode::VERTICAL || nowGameMode == GameMode::OMNIDIRECTIONAL) {
 			moveDirection = { base.x, 0, base.y };
 			axis = CVector3::BASIS_Y;
@@ -164,7 +166,7 @@ void BaseEnemy::create_move(std::istringstream& command) {
 void BaseEnemy::attack() {
 	Vector3 forward = Transform3D::HomogeneousVector(CVector3::BASIS_Z, hierarchy.matWorld_);
 	attackFunction(get_position(), forward);
-	attackCall.restart(2);
+	attackCall.restart(1.0f);
 }
 
 void BaseEnemy::set_attack_func(const std::function<void(const Vector3&, const Vector3&)>& func) {

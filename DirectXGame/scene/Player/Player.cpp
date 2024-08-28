@@ -77,7 +77,7 @@ void Player::update() {
 }
 
 void Player::attack() {
-	attackTimer = 0.16f;
+	attackTimer = 0.08f;
 	if (attackFunction) {
 		attackFunction();
 	}
