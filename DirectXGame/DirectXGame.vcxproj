@@ -135,6 +135,7 @@
     <ClCompile Include="scene\Enemy\EnemyMoveState\EnemyMoveLinear.cpp" />
     <ClCompile Include="scene\Enemy\EnemyMoveState\EnemyMoveStop.cpp" />
     <ClCompile Include="scene\Enemy\FastEnemy.cpp" />
+    <ClCompile Include="scene\Enemy\GatlingEnemy.cpp" />
     <ClCompile Include="scene\Enemy\ToPlayerEnemy.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\Player\Bullet.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="scene\Enemy\EnemyMoveState\EnemyMoveLinear.h" />
     <ClInclude Include="scene\Enemy\EnemyMoveState\EnemyMoveStop.h" />
     <ClInclude Include="scene\Enemy\FastEnemy.h" />
+    <ClInclude Include="scene\Enemy\GatlingEnemy.h" />
     <ClInclude Include="scene\Enemy\ToPlayerEnemy.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\Player\Bullet.h" />

@@ -23,7 +23,7 @@ public: // コンストラクタ
 	BaseEnemy& operator=(BaseEnemy&&) = default;
 
 public: // publicメンバ関数
-	void initialize() override;
+	virtual void initialize() override;
 	virtual void update() override;
 
 	void load_move(const std::string& fileName);

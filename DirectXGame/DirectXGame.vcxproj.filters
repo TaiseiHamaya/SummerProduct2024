@@ -228,6 +228,9 @@
     <ClCompile Include="scene\Enemy\ToPlayerEnemy.cpp">
       <Filter>ソース ファイル\scene\enemy</Filter>
     </ClCompile>
+    <ClCompile Include="scene\Enemy\GatlingEnemy.cpp">
+      <Filter>ソース ファイル\scene\enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -420,6 +423,9 @@
       <Filter>ヘッダー ファイル\scene\enemy</Filter>
     </ClInclude>
     <ClInclude Include="scene\Enemy\ToPlayerEnemy.h">
+      <Filter>ヘッダー ファイル\scene\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Enemy\GatlingEnemy.h">
       <Filter>ヘッダー ファイル\scene\enemy</Filter>
     </ClInclude>
   </ItemGroup>

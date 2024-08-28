@@ -9,6 +9,7 @@
 #include <Enemy/BaseEnemy.h>
 #include <Enemy/FastEnemy.h>
 #include <Enemy/ToPlayerEnemy.h>
+#include <Enemy/GatlingEnemy.h>
 #include <Timeline/GameModeManager.h>
 
 EnemyManager::EnemyManager() = default;
@@ -141,6 +142,7 @@ void EnemyManager::create_enemy_data() {
 		 { "DEFAULT", EnemyData{std::shared_ptr<Model>(Model::Create()),&BaseEnemy::Create}},
 		 { "FAST", EnemyData{std::shared_ptr<Model>(Model::Create()),&FastEnemy::Create}},
 		 { "PLAYER", EnemyData{std::shared_ptr<Model>(Model::Create()),&ToPlayerEnemy::Create}},
+		 { "GATLING", EnemyData{std::shared_ptr<Model>(Model::Create()),&GatlingEnemy::Create}},
 	};
 }
 
