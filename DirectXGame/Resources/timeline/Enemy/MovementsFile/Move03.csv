@@ -12,7 +12,7 @@
 // CIRCULAR引数 : Center(Vector2),SPEED(degree/s) -> LINEARと同様,,,
 ,,,,
 SHOT,NO,,,
-MOVE,LINEAR,0,-1,8
-WAIT,2.5,,,
+MOVE,LINEAR,0,-1,12.5
+WAIT,2,,,
 MOVE,STOP,,,
 SHOT,YES,,,

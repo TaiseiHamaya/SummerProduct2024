@@ -12,6 +12,6 @@
 // CIRCULAR引数 : Center(Vector2),SPEED(degree/s) -> LINEARと同様,,,
 ,,,,
 SHOT,YES,,,
-MOVE,LINEAR,3,0,1
+MOVE,LINEAR,1,0,4
 WAIT,20,,,
 DESTROY,,,,

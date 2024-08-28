@@ -4,9 +4,9 @@
 // 引数3.4 : 初期位置(Vector2) -> コマンド実行時のゲームモード基準の平面での位置,,,,,
 // 引数5 : degree(float) -> コマンド実行時のゲームモード基準の平面での回転量,,,,,
 ,,,,,
-POP,DEFAULT,Move03.csv,5,35,180
-POP,FAST,Move03.csv,10,30,180
-POP,DEFAULT,Move03.csv,15,35,180
-POP,DEFAULT,Move03.csv,-5,35,180
-POP,FAST,Move03.csv,-10,30,180
-POP,DEFAULT,Move03.csv,-15,35,180
+POP,DEFAULT,Move03.csv,5,40,180
+POP,FAST,Move03.csv,10,35,180
+POP,DEFAULT,Move03.csv,15,40,180
+POP,DEFAULT,Move03.csv,-5,40,180
+POP,FAST,Move03.csv,-10,35,180
+POP,DEFAULT,Move03.csv,-15,40,180

@@ -133,7 +133,7 @@ void BaseEnemy::create_move(std::istringstream& command) {
 			moveDirection = { 0, base.y, base.x };
 		}
 
-		newState->initialize(moveDirection, speed);
+		newState->initialize(moveDirection.normalize_safe(1e-4f, CVector3::ZERO), speed);
 		moveState = std::move(newState);
 	}
 	else if (word == "CIRCULAR") {
