@@ -6,7 +6,15 @@
 
 void ToPlayerEnemy::update() {
 	BaseEnemy::update();
-	transform.look_at(p_player->get_transform());
+	Vector3 forward = (p_player->get_transform().get_translate() - transform.get_translate()).normalize_safe();
+	Quaternion lookRotation = Quaternion::LookForward(forward);
+	transform.set_rotate(
+		Quaternion::Slerp(
+			transform.get_quaternion(),
+			lookRotation,
+			0.05f
+		)
+	);
 }
 
 void ToPlayerEnemy::attack() {
