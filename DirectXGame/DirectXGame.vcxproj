@@ -129,6 +129,7 @@
     <ClCompile Include="scene\Collision\CollisionManager.cpp" />
     <ClCompile Include="scene\Collision\SphereCollider.cpp" />
     <ClCompile Include="scene\Enemy\BaseEnemy.cpp" />
+    <ClCompile Include="scene\Enemy\BossEnemy.cpp" />
     <ClCompile Include="scene\Enemy\EnemyManager.cpp" />
     <ClCompile Include="scene\Enemy\EnemyMoveState\BaseEnemyMoveState.cpp" />
     <ClCompile Include="scene\Enemy\EnemyMoveState\EnemyMoveCircular.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="scene\Collision\CollisionManager.h" />
     <ClInclude Include="scene\Collision\SphereCollider.h" />
     <ClInclude Include="scene\Enemy\BaseEnemy.h" />
+    <ClInclude Include="scene\Enemy\BossEnemy.h" />
     <ClInclude Include="scene\Enemy\EnemyManager.h" />
     <ClInclude Include="scene\Enemy\EnemyMoveState\BaseEnemyMoveState.h" />
     <ClInclude Include="scene\Enemy\EnemyMoveState\EnemyMoveCircular.h" />

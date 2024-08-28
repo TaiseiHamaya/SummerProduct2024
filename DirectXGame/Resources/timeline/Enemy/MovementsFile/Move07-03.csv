@@ -1,0 +1,18 @@
+,,,,
+// MOVE,WAIT,ANGLE,DESTROY,SHOT
+// WAIT引数 : WAIT,WaitTime(second),,,
+// MOVE引数 : MOVE,MOVETYPE,,,
+// DESTROY引数 : なし,,,,
+// SHOT引数 : YES,NO,,,
+,,,,
+// MOVETYPE一覧,,,,
+// STOP,LINEAR,CIRCULAR,,
+// STOP引数 : なし,,,,
+// LINEAR引数 : Direction(Vector2),SPEED(m/s) -> コマンド実行時のゲームモード基準の平面でDirectionXY方向に移動,,,
+// CIRCULAR引数 : Center(Vector2),SPEED(degree/s) -> LINEARと同様,,,
+,,,,
+SHOT,NO,,,
+MOVE,LINEAR,1,-1,12
+WAIT,1,,,
+MOVE,STOP,,,
+SHOT,YES,,,

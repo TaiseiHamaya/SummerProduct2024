@@ -11,6 +11,7 @@
 #include <Enemy/ToPlayerEnemy.h>
 #include <Enemy/GatlingEnemy.h>
 #include <Enemy/ShotgunEnemy.h>
+#include <Enemy/BossEnemy.h>
 #include <Timeline/GameModeManager.h>
 
 EnemyManager::EnemyManager() = default;
@@ -145,6 +146,7 @@ void EnemyManager::create_enemy_data() {
 		 { "PLAYER", EnemyData{std::shared_ptr<Model>(Model::Create()),&ToPlayerEnemy::Create}},
 		 { "GATLING", EnemyData{std::shared_ptr<Model>(Model::Create()),&GatlingEnemy::Create}},
 		 { "SHOTGUN", EnemyData{std::shared_ptr<Model>(Model::Create()),&ShotgunEnemy::Create}},
+		 { "BOSS", EnemyData{std::shared_ptr<Model>(Model::Create()),&BossEnemy::Create}},
 	};
 }
 
@@ -153,7 +155,6 @@ void EnemyManager::pop_enemy(const std::string& enemyTypeName, const std::string
 
 	std::unique_ptr<BaseEnemy> newEnemy{ enemyData.at(enemyTypeName).createFunction() };
 
-	newEnemy->initialize();
 	newEnemy->set_parent(*field);
 	newEnemy->set_model(enemyData[enemyTypeName].model);
 	newEnemy->set_attack_func(attackFunction);
@@ -161,6 +162,7 @@ void EnemyManager::pop_enemy(const std::string& enemyTypeName, const std::string
 	newEnemy->get_transform().set_translate(position);
 	newEnemy->get_transform().set_rotate(rotation);
 	newEnemy->load_move(fileName);
+	newEnemy->initialize();
 
 	enemies.push_back(std::move(newEnemy));
 }

@@ -13,7 +13,7 @@
 #include <Collision/SphereCollider.h>
 
 void BaseEnemy::initialize() {
-	GameObject::initialize();
+	hierarchy.Initialize();
 
 	attackCall = {
 		std::bind(&BaseEnemy::attack, this), 0
