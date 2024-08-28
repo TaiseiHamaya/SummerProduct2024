@@ -16,7 +16,7 @@ void BaseEnemy::initialize() {
 	GameObject::initialize();
 
 	attackCall = {
-		std::bind(&BaseEnemy::attack, this), 1
+		std::bind(&BaseEnemy::attack, this), 0
 	};
 	moveCall = {
 		std::bind(&BaseEnemy::next_command, this), 0

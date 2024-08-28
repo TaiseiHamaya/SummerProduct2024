@@ -1,0 +1,11 @@
+// 引数5つ,,,,,
+// 引数1 : EnemyType(string),,,,,
+// 引数2 : MovementsFileName(string),,,,,
+// 引数3.4 : 初期位置(Vector2) -> コマンド実行時のゲームモード基準の平面での位置,,,,,
+// 引数5 : degree(float) -> コマンド実行時のゲームモード基準の平面での回転量,,,,,
+,,,,,
+POP,SHOTGUN,Move06-01.csv,21.25,19.485,180
+POP,GATLING,Move06-01.csv,16.25,19.485,180
+POP,GATLING,Move06-01.csv,26.25,19.485,180
+POP,GATLING,Move06-01.csv,21.25,24.485,180
+POP,GATLING,Move06-01.csv,21.25,14.485,180

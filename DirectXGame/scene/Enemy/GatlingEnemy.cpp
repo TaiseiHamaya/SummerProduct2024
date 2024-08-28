@@ -10,7 +10,7 @@
 void GatlingEnemy::initialize() {
 	BaseEnemy::initialize();
 	gatlingCall = {
-		std::bind(&GatlingEnemy::reset_gatling, this), 0.08f
+		std::bind(&GatlingEnemy::reset_gatling, this), 0
 	};
 	shotCount = 0;
 }
@@ -24,7 +24,7 @@ void GatlingEnemy::reset_gatling() {
 		++shotCount;
 		if (shotCount == 15) {
 			shotCount = 0;
-			attackCall.restart(3.0f);
+			attackCall.restart(2.0f);
 		}
 		static std::random_device seed_gen;
 		static std::mt19937 engine(seed_gen());
