@@ -30,6 +30,7 @@ void EnemyManager::update() {
 	enemyPopCommands.remove_if(
 		[](const PopCommand& command) { return command.call.is_finished() && command.stream.eof(); }
 	);
+
 	for (auto&& itr = enemies.begin(); itr != enemies.end(); ++itr) {
 		itr->get()->update();
 	}
@@ -65,8 +66,8 @@ void EnemyManager::load_pop_file(const std::string& fileName) {
 
 	file.close();
 
-	command.call = { 
-		std::bind(&EnemyManager::next_pop_command, this), 0 
+	command.call = {
+		std::bind(&EnemyManager::next_pop_command, this), 0
 	};
 }
 
@@ -141,12 +142,12 @@ void EnemyManager::next_pop_command() {
 
 void EnemyManager::create_enemy_data() {
 	enemyData = {
-		 { "DEFAULT", EnemyData{std::shared_ptr<Model>(Model::Create()),&BaseEnemy::Create}},
-		 { "FAST", EnemyData{std::shared_ptr<Model>(Model::Create()),&FastEnemy::Create}},
-		 { "PLAYER", EnemyData{std::shared_ptr<Model>(Model::Create()),&ToPlayerEnemy::Create}},
-		 { "GATLING", EnemyData{std::shared_ptr<Model>(Model::Create()),&GatlingEnemy::Create}},
-		 { "SHOTGUN", EnemyData{std::shared_ptr<Model>(Model::Create()),&ShotgunEnemy::Create}},
-		 { "BOSS", EnemyData{std::shared_ptr<Model>(Model::Create()),&BossEnemy::Create}},
+		 { "DEFAULT", EnemyData{ std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/default", true)), &BaseEnemy::Create }},
+		 { "FAST", EnemyData{ std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/default", true)), &FastEnemy::Create }},
+		 { "PLAYER", EnemyData{ std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/default", true)), &ToPlayerEnemy::Create }},
+		 { "GATLING", EnemyData{ std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/default", true)), &GatlingEnemy::Create }},
+		 { "SHOTGUN", EnemyData{ std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/shotgun", true)), &ShotgunEnemy::Create }},
+		 { "BOSS", EnemyData{ std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/boss", true)), &BossEnemy::Create}},
 	};
 }
 

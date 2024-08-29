@@ -42,10 +42,10 @@ void BaseEnemy::update() {
 	}
 
 	moveCall.update();
+	moveState->update();
 	if (isAttack) {
 		attackCall.update();
 	}
-	moveState->update();
 }
 
 void BaseEnemy::load_move(const std::string& fileName) {
