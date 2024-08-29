@@ -164,6 +164,7 @@ void EnemyManager::pop_enemy(const std::string& enemyTypeName, const std::string
 	newEnemy->get_transform().set_rotate(rotation);
 	newEnemy->load_move(fileName);
 	newEnemy->initialize();
+	newEnemy->begin_rendering();
 
 	enemies.push_back(std::move(newEnemy));
 }
