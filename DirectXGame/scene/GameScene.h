@@ -11,6 +11,7 @@
 #include <Timeline/GameModeManager.h>
 #include <Timeline/GameTimeline.h>
 #include <Collision/CollisionManager.h>
+#include <Skydome/Skydome.h>
 
 #include "Player/Player.h"
 #include "RailField/RailField.h"
@@ -61,14 +62,15 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 	uint32_t textureHandle = 0;
-	std::shared_ptr<Model> playerModel;
 	std::shared_ptr<Model> skydomeModel;
+	std::shared_ptr<Model> playerModel;
 	std::shared_ptr<Model> playerBulletModel;
 	std::shared_ptr<Model> enemyBulletModel;
 
 	std::unique_ptr<GazerCamera> camera;
 
 	std::unique_ptr<RailField> field;
+	std::unique_ptr<Skydome> skydome;
 	std::unique_ptr<GameTimeline> timeline;
 	std::unique_ptr<GameModeManager> gameModeManager;
 	std::unique_ptr<CollisionManager> collisionManager;

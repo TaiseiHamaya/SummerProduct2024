@@ -103,6 +103,12 @@
     <Filter Include="ソース ファイル\scene\collision">
       <UniqueIdentifier>{f3e28b24-5a43-4b9d-b757-242ae1f035eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\scene\skydome">
+      <UniqueIdentifier>{a70bc371-3245-45bc-90d3-29600f138b11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\scene\skydome">
+      <UniqueIdentifier>{868bbf74-b80e-40e8-9921-17c2ab6a8339}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -236,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="scene\Enemy\BossEnemy.cpp">
       <Filter>ソース ファイル\scene\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Skydome\Skydome.cpp">
+      <Filter>ソース ファイル\scene\skydome</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -439,6 +448,9 @@
     </ClInclude>
     <ClInclude Include="scene\Enemy\BossEnemy.h">
       <Filter>ヘッダー ファイル\scene\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Skydome\Skydome.h">
+      <Filter>ヘッダー ファイル\scene\skydome</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

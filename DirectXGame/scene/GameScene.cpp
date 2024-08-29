@@ -34,7 +34,11 @@ void GameScene::Initialize() {
 	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
 	playerBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("bullet", true));
 	enemyBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("bullet", true));
-	//skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
+	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
+
+	skydome = std::make_unique<Skydome>();
+	skydome->initialize();
+	skydome->set_model(skydomeModel);
 
 	field = std::make_unique<RailField>();
 	field->initialize();
@@ -134,6 +138,7 @@ void GameScene::Update() {
 #endif // _DEBUG
 
 	// 更新処理
+	skydome->update();
 	field->update();
 	camera->update();
 	player->update();
@@ -148,6 +153,7 @@ void GameScene::Update() {
 	playerBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
 	enemyBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
 
+	skydome->begin_rendering();
 	field->begin_rendering();
 	camera->begin_rendering();
 	player->begin_rendering();
@@ -212,6 +218,7 @@ void GameScene::Draw() {
 		itr->draw();
 	}
 	enemyManager->draw();
+	skydome->draw();
 
 #ifdef _DEBUG
 	field->debug_draw();
