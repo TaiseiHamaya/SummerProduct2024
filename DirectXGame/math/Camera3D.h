@@ -16,7 +16,7 @@ public:
 	Camera3D& operator=(const Camera3D&) = delete;
 
 public:
-	void initialize() override;
+	virtual void initialize() override;
 
 	void begin_rendering() override;
 

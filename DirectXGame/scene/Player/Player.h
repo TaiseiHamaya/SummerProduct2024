@@ -11,7 +11,7 @@
 
 class Sprite;
 class Input;
-class Camera3D;
+class GazerCamera;
 struct TransitionData;
 
 class Player : public GameObject {
@@ -31,7 +31,7 @@ public:
 	void default_data(Vector3&& position);
 	void set_move_state(TransitionData* transitionData);
 	void set_attack_func(const std::function<void(void)>& func);
-	void set_camera(Camera3D* camera_);
+	void set_camera(GazerCamera* camera_);
 
 public:
 	void on_collision(const BaseCollider* collider);
@@ -63,6 +63,8 @@ private: // メンバ変数
 
 	float attackTimer;
 	std::function<void(void)> attackFunction;
+
+	std::function<void(void)> cameraShakeFunction;
 
 	Camera3D* camera;
 };

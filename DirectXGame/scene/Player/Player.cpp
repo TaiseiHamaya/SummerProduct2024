@@ -10,6 +10,7 @@
 #include <GameTimer.h>
 #include <Transform3D.h>
 
+#include "Camera/GazerCamera.h"
 #include "Timeline/GameModeManager.h"
 #include "Collision/SphereCollider.h"
 #include "Player/MoveState/OmnidirectionalMove.h"
@@ -179,8 +180,9 @@ void Player::set_attack_func(const std::function<void(void)>& func) {
 	attackFunction = func;
 }
 
-void Player::set_camera(Camera3D* camera_) {
+void Player::set_camera(GazerCamera* camera_) {
 	camera = camera_;
+	cameraShakeFunction = std::bind(&GazerCamera::do_shake, camera_);
 }
 
 void Player::on_collision([[maybe_unused]] const BaseCollider* collider_) {
@@ -193,6 +195,7 @@ void Player::on_collision([[maybe_unused]] const BaseCollider* collider_) {
 	if (health >= 0) {
 		healthData[health].isFlashing = true;
 	}
+	cameraShakeFunction();
 }
 
 #ifdef _DEBUG
