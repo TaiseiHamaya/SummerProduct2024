@@ -61,6 +61,7 @@ void Player::initialize() {
 			);
 		++i;
 	}
+	invincibleTimer = 0.0f;
 }
 
 void Player::update() {
@@ -68,6 +69,7 @@ void Player::update() {
 	bool inputResult = input->GetJoystickState(0, joyState);
 
 	attackTimer -= GameTimer::DeltaTime();
+	invincibleTimer -= GameTimer::DeltaTime();
 
 	if (moveState) {
 		// 入力処理
@@ -182,8 +184,12 @@ void Player::set_camera(Camera3D* camera_) {
 }
 
 void Player::on_collision([[maybe_unused]] const BaseCollider* collider_) {
-	// do nothing
+	if (invincibleTimer >= 0) {
+		return;
+	}
+
 	--health;
+	invincibleTimer = 0.5f;
 	if (health >= 0) {
 		healthData[health].isFlashing = true;
 	}
@@ -194,6 +200,16 @@ void Player::debug_gui() {
 	// imgui debug
 	ImGui::Begin("Player");
 	transform.debug_gui();
+	ImGui::Separator();
+	if (ImGui::Button("Reset health")) {
+		health = MAX_HEALTH;
+		for (auto& itr : healthData) {
+			itr.flashCount = 0;
+			itr.isDraw = true;
+			itr.isFlashing = false;
+		}
+	}
+	ImGui::Text("Invincible timer : %f", invincibleTimer);
 	ImGui::End();
 }
 #endif // _DEBUG

@@ -56,6 +56,8 @@ private: // メンバ変数
 	};
 	std::array<HealthData, MAX_HEALTH> healthData;
 
+	float invincibleTimer;
+
 	std::unique_ptr<BaseMoveState> moveState;
 	Vector3 velocity;
 
