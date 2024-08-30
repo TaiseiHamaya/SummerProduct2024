@@ -1,8 +1,6 @@
 #include "ToPlayerEnemy.h"
 
-#include <Player/Player.h>
-
-//const Player* ToPlayerEnemy::p_player;
+#include "Player/Player.h"
 
 void ToPlayerEnemy::update() {
 	BaseEnemy::update();

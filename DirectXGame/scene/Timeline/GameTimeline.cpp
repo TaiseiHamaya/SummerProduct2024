@@ -5,7 +5,7 @@
 
 #include <Utility.h>
 
-#include <Timeline/GameModeManager.h>
+#include "Timeline/GameModeManager.h"
 
 void GameTimeline::initialize() {
 	load("./Resources/timeline/Timeline.csv");

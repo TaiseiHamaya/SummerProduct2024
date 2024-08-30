@@ -3,7 +3,7 @@
 #include <GameTimer.h>
 #include <Quaternion.h>
 
-#include <Enemy/BaseEnemy.h>
+#include "Enemy/BaseEnemy.h"
 
 void EnemyMoveCircular::initialize(const Vector3& center_, const Vector3& axis_, float anglePsec_) {
 	center = center_;

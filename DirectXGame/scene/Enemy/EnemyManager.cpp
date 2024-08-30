@@ -6,13 +6,13 @@
 #include <Utility.h>
 #include <Definition.h>
 
-#include <Enemy/BaseEnemy.h>
-#include <Enemy/FastEnemy.h>
-#include <Enemy/ToPlayerEnemy.h>
-#include <Enemy/GatlingEnemy.h>
-#include <Enemy/ShotgunEnemy.h>
-#include <Enemy/BossEnemy.h>
-#include <Timeline/GameModeManager.h>
+#include "Enemy/BaseEnemy.h"
+#include "Enemy/FastEnemy.h"
+#include "Enemy/ToPlayerEnemy.h"
+#include "Enemy/GatlingEnemy.h"
+#include "Enemy/ShotgunEnemy.h"
+#include "Enemy/BossEnemy.h"
+#include "Timeline/GameModeManager.h"
 
 EnemyManager::EnemyManager() = default;
 

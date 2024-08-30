@@ -1,6 +1,6 @@
 #include "TransitionMove.h"
 
-#include <Timeline/GameModeManager.h>
+#include "Timeline/GameModeManager.h"
 
 void TransitionMove::set_transition_data(TransitionData* transitionData_) {
 	transitionData = transitionData_;

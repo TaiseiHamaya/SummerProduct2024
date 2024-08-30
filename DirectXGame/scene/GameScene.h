@@ -8,11 +8,10 @@
 
 #include "Model.h"
 
-#include <Timeline/GameModeManager.h>
-#include <Timeline/GameTimeline.h>
-#include <Collision/CollisionManager.h>
-#include <Skydome/Skydome.h>
-
+#include "Timeline/GameModeManager.h"
+#include "Timeline/GameTimeline.h"
+#include "Collision/CollisionManager.h"
+#include "Skydome/Skydome.h"
 #include "Player/Player.h"
 #include "RailField/RailField.h"
 #include "Player/Bullet.h"

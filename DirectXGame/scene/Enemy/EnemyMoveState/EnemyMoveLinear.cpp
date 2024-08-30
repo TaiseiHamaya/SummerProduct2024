@@ -2,7 +2,7 @@
 
 #include <GameTimer.h>
 
-#include <Enemy/BaseEnemy.h>
+#include "Enemy/BaseEnemy.h"
 
 void EnemyMoveLinear::initialize(const Vector3& direction_, float speed_) {
 	direction = direction_;
