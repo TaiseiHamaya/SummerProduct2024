@@ -29,19 +29,22 @@ void GameScene::Initialize() {
 
 	GameTimer::Initialize();
 
-	// いろいろ
+	// いろいろロード
 	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
 	playerBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player/bullet", true));
 	enemyBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/bullet", true));
 	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 
+	// 天球
 	skydome = std::make_unique<Skydome>();
 	skydome->initialize();
 	skydome->set_model(skydomeModel);
 
+	// フィールド
 	field = std::make_unique<RailField>();
 	field->initialize();
 
+	// カメラ
 	camera = std::make_unique<GazerCamera>();
 	camera->initialize();
 	camera->set_parent(*field);
@@ -51,10 +54,6 @@ void GameScene::Initialize() {
 		CVector3::ZERO
 		});
 	camera->set_offset({ 0,0,-30 });
-
-	// 天球
-	//skydome = std::make_unique<Skydome>();
-	//skydome->initialize(skydomeModel);
 
 	// プレイヤー
 	player = std::make_unique<Player>();
@@ -94,14 +93,16 @@ void GameScene::Initialize() {
 	// Collision
 	collisionManager = std::make_unique<CollisionManager>();
 
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
-
+	// プレイヤー対象のエネミーに関連する初期化
 	ToPlayerEnemy::SetTargetPlayer(player.get());
 
 #ifdef _DEBUG
+	// 右上の座標軸描画の設定
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
 	AxisIndicator::GetInstance()->SetVisible(true);
 #endif // _DEBUG
 
+	// GameObjectのVPを設定
 	GameObject::SetStaticViewProjection(camera->get_view_projection());
 }
 
