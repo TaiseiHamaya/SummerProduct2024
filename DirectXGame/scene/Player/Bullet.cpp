@@ -7,7 +7,8 @@
 void Bullet::initialize(const Vector3& position, const Vector3& direction_, float speed_) {
 	GameObject::initialize();
 	direction = direction_.normalize_safe();
-	transform.set_translate(position);
+	transform.set_translate(position + direction_);
+	transform.set_rotate(Quaternion::LookForward(direction_));
 	isDead = false;
 	lifeTime = 10.0f;
 	speed = speed_;

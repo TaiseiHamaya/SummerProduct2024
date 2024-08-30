@@ -32,8 +32,8 @@ void GameScene::Initialize() {
 
 	// いろいろ
 	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
-	playerBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("bullet", true));
-	enemyBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("bullet", true));
+	playerBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player/bullet", true));
+	enemyBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/bullet", true));
 	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 
 	skydome = std::make_unique<Skydome>();
@@ -253,7 +253,7 @@ void GameScene::add_player_bullet() {
 void GameScene::add_enemy_bullet(const Vector3& position, const Vector3& direction) {
 	enemyBullets.emplace_back();
 	auto&& newBullet = enemyBullets.back();
-	newBullet.initialize(position + direction * 1.0f, direction, 5.0f);
+	newBullet.initialize(position, direction, 5.0f);
 	newBullet.set_model(enemyBulletModel);
 
 }
