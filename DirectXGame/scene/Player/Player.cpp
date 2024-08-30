@@ -4,16 +4,17 @@
 
 #include <Input.h>
 #include <ViewProjection.h>
+#include <Sprite.h>
+#include <TextureManager.h>
 
 #include <GameTimer.h>
 #include <Transform3D.h>
 
 #include "Timeline/GameModeManager.h"
-
-#include <Player/MoveState/OmnidirectionalMove.h>
-#include <Player/MoveState/SideMove.h>
-#include <Player/MoveState/VerticalMove.h>
-#include <Player/MoveState/TransitionMove.h>
+#include "Player/MoveState/OmnidirectionalMove.h"
+#include "Player/MoveState/SideMove.h"
+#include "Player/MoveState/VerticalMove.h"
+#include "Player/MoveState/TransitionMove.h"
 
 #include <Collision/SphereCollider.h>
 
@@ -37,6 +38,30 @@ void Player::initialize() {
 	tempCollider->set_callback(std::bind(&Player::on_collision, this, std::placeholders::_1));
 	tempCollider->set_radius(0.5f);
 	collider = std::move(tempCollider);
+
+	auto handle = TextureManager::GetInstance()->Load("./Resources/player/hitpoint/hitpoint.png");
+	for (int i = 0; auto & healthItr : healthData) {
+		healthItr.sprite = std::unique_ptr<Sprite>(Sprite::Create(handle, { 0,0 }));
+		healthItr.sprite->Initialize();
+		healthItr.sprite->SetSize({ 100,100 });
+		healthItr.sprite->SetPosition({ 100.0f * i, 620 });
+		healthItr.flashCount = 0;
+		healthItr.isDraw = true;
+		healthItr.flashingCall =
+			TimedCall<void(void)>(
+				[&healthItr]() {
+					healthItr.isDraw ^= 0b1;
+					++healthItr.flashCount;
+					healthItr.flashingCall.restart(0.02f);
+					if (healthItr.flashCount > 12) {
+						healthItr.isFlashing = false;
+						healthItr.isDraw = false;
+					}
+				}, 
+				0
+			);
+		++i;
+	}
 }
 
 void Player::update() {
@@ -44,7 +69,7 @@ void Player::update() {
 	bool inputResult = input->GetJoystickState(0, joyState);
 
 	attackTimer -= GameTimer::DeltaTime();
-	
+
 	if (moveState) {
 		// 入力処理
 		if (inputResult) {
@@ -73,6 +98,20 @@ void Player::update() {
 		(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) &&
 		attackTimer <= 0) {
 		attack();
+	}
+
+	for (auto & healthItr : healthData) {
+		if (healthItr.isFlashing) {
+			healthItr.flashingCall.update();
+		}
+	}
+}
+
+void Player::draw_ui() const {
+	for (const auto& healthItr : healthData) {
+		if (healthItr.isDraw) {
+			healthItr.sprite->Draw();
+		}
 	}
 }
 
@@ -145,6 +184,10 @@ void Player::set_camera(Camera3D* camera_) {
 
 void Player::on_collision([[maybe_unused]] const BaseCollider* collider_) {
 	// do nothing
+	--health;
+	if (health >= 0) {
+		healthData[health].isFlashing = true;
+	}
 }
 
 #ifdef _DEBUG
