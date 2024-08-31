@@ -19,16 +19,18 @@ GameScene::GameScene() = default;
 
 GameScene::~GameScene() = default;
 
-void GameScene::Initialize() {
+void GameScene::initialize() {
 	load();
 	allocate();
 }
 
-void GameScene::Update() {
+void GameScene::begin() {
 	GameTimer::Update();
 
 	collisionManager->begin_flame();
+}
 
+void GameScene::update() {
 	timeline->update();
 
 	gameModeManager->update();
@@ -70,7 +72,9 @@ void GameScene::Update() {
 
 	playerBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
 	enemyBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
+}
 
+void GameScene::begin_rendering() {
 	skydome->begin_rendering();
 	field->begin_rendering();
 	camera->begin_rendering();
@@ -82,7 +86,9 @@ void GameScene::Update() {
 		itr->begin_rendering();
 	}
 	enemyManager->begin_rendering();
+}
 
+void GameScene::after_update() {
 	collisionManager->register_collider("Player", player->get_collider());
 	for (auto&& itr = playerBullets.begin(); itr != playerBullets.end(); ++itr) {
 		collisionManager->register_collider("PlayerBullet", itr->get_collider());
@@ -102,7 +108,7 @@ void GameScene::Update() {
 	collisionManager->collision("PlayerBullet", "Enemy");
 }
 
-void GameScene::Draw() {
+void GameScene::draw() const {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 

@@ -246,6 +246,12 @@
     <ClCompile Include="scene\Skydome\Skydome.cpp">
       <Filter>ソース ファイル\scene\skydome</Filter>
     </ClCompile>
+    <ClCompile Include="game\SceneManager.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="game\BaseScene.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -451,6 +457,12 @@
     </ClInclude>
     <ClInclude Include="scene\Skydome\Skydome.h">
       <Filter>ヘッダー ファイル\scene\skydome</Filter>
+    </ClInclude>
+    <ClInclude Include="game\SceneManager.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\BaseScene.h">
+      <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

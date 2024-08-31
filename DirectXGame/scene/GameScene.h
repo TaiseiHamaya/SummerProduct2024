@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
+#include <BaseScene.h>
 
 #include "Camera/GazerCamera.h"
 
@@ -20,7 +21,7 @@
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene {
+class GameScene : public BaseScene {
 
 public: // メンバ関数
 	/// <summary>
@@ -36,17 +37,23 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void initialize() override;
+	
+	void begin();
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void update() override;
+
+	void begin_rendering() override;
+
+	void after_update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void draw() const override;
 
 	void load();
 	void allocate();
