@@ -72,4 +72,10 @@ private: // メンバ変数
 	Audio* audio;
 	std::uint32_t shotSoundHandle;
 	std::uint32_t damageSoundHandle;
+
+	bool doneRotationTutorial;
+	bool isShowRotationTutorial;
+	std::uint32_t rotationTutorialSpriteHandle;
+	TimedCall<void(void)> rotationTutorialCall;
+	std::unique_ptr<Sprite> rotationTutorialSprite;
 };

@@ -35,6 +35,9 @@ private:
 	void make_view_matrix();
 	void make_perspectivefov_matrix();
 
+public:
+	static Matrix4x4 MakeViewportMatrix(const Vector2& origin, const Vector2& size, float minDepth, float maxDepth);
+
 protected:
 	std::unique_ptr<ViewProjection> viewProjection;
 

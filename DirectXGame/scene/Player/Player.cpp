@@ -7,6 +7,7 @@
 #include <Sprite.h>
 #include <TextureManager.h>
 #include <Audio.h>
+#include <WinApp.h>
 
 #include <GameTimer.h>
 #include <Transform3D.h>
@@ -58,7 +59,7 @@ void Player::initialize() {
 						healthItr.isFlashing = false;
 						healthItr.isDraw = false;
 					}
-				}, 
+				},
 				0
 			);
 		++i;
@@ -68,6 +69,17 @@ void Player::initialize() {
 	audio = Audio::GetInstance();
 	shotSoundHandle = audio->LoadWave("sounds/shot.wav");
 	damageSoundHandle = audio->LoadWave("sounds/damaged.wav");
+
+	doneRotationTutorial = false;
+	isShowRotationTutorial = false;
+	rotationTutorialSpriteHandle = TextureManager::GetInstance()->Load("/UI/tutorial/rotation.png");
+	rotationTutorialCall = {
+		[&]() { isShowRotationTutorial = false; },
+		5
+	};
+	rotationTutorialSprite = std::unique_ptr<Sprite>(Sprite::Create(rotationTutorialSpriteHandle, { 0,0 }));
+	rotationTutorialSprite->SetSize({ 128,128 });
+	rotationTutorialSprite->SetAnchorPoint({0.0f,0.5f});
 }
 
 void Player::update() {
@@ -107,11 +119,25 @@ void Player::update() {
 		attack();
 	}
 
-	for (auto & healthItr : healthData) {
+	for (auto& healthItr : healthData) {
 		if (healthItr.isFlashing) {
 			healthItr.flashingCall.update();
 		}
 	}
+
+	if (doneRotationTutorial) {
+		rotationTutorialCall.update();
+	}
+
+	Matrix4x4 viewport = Camera3D::MakeViewportMatrix({ 0,0 }, { WinApp::kWindowWidth, WinApp::kWindowHeight }, 0, 1);
+
+	Vector3 playerScreenPosition =
+		Transform3D::Homogeneous(
+			CVector3::ZERO,
+			hierarchy.matWorld_ * defaultViewProjection->matView * defaultViewProjection->matProjection * viewport
+		);
+
+	rotationTutorialSprite->SetPosition({ playerScreenPosition.x + 50, playerScreenPosition.y });
 }
 
 void Player::draw_ui() const {
@@ -119,6 +145,10 @@ void Player::draw_ui() const {
 		if (healthItr.isDraw) {
 			healthItr.sprite->Draw();
 		}
+	}
+
+	if (isShowRotationTutorial) {
+		rotationTutorialSprite->Draw();
 	}
 }
 
@@ -154,6 +184,10 @@ void Player::set_move_state(TransitionData* transitionData) {
 		moveState = std::make_unique<SideMove>();
 		break;
 	case GameMode::OMNIDIRECTIONAL:
+		if (!doneRotationTutorial) {
+			doneRotationTutorial = true;
+			isShowRotationTutorial = true;
+		}
 		moveState = std::make_unique<OmnidirectionalMove>();
 		break;
 	case GameMode::TRANSITION:
