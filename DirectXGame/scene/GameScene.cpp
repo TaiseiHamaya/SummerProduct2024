@@ -27,6 +27,9 @@ void GameScene::Initialize() {
 	input_->SetJoystickDeadZone(0, 0, 0);
 	audio_ = Audio::GetInstance();
 
+	std::uint32_t bgmSoundHandle = audio_->LoadWave("sounds/bgm.wav");
+	audio_->PlayWave(bgmSoundHandle, true, 0.18f);
+
 	GameTimer::Initialize();
 
 	// いろいろロード
