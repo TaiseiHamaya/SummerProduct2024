@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+#include <Audio.h>
 #include <Utility.h>
 #include <Definition.h>
 
@@ -176,8 +177,19 @@ void BaseEnemy::set_game_mode_manager(const GameModeManager* manager) {
 	modeManager = manager;
 }
 
+void BaseEnemy::set_dead_sound(std::uint32_t handle) {
+	deadSoundHandle = handle;
+}
+
 void BaseEnemy::on_collision([[maybe_unused]] const BaseCollider* collider_) {
 	--hitpoint;
+	if (hitpoint == 0) {
+		audio->PlayWave(deadSoundHandle, false, 0.5f);
+	}
+}
+
+void BaseEnemy::InitializeStaticAudio() {
+	audio = Audio::GetInstance();
 }
 
 std::unique_ptr<BaseEnemy> BaseEnemy::Create() {

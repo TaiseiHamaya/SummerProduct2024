@@ -11,6 +11,7 @@
 
 class Sprite;
 class Input;
+class Audio;
 class GazerCamera;
 struct TransitionData;
 
@@ -67,4 +68,8 @@ private: // メンバ変数
 	std::function<void(void)> cameraShakeFunction;
 
 	Camera3D* camera;
+
+	Audio* audio;
+	std::uint32_t shotSoundHandle;
+	std::uint32_t damageSoundHandle;
 };

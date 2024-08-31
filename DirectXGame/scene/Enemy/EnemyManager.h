@@ -10,6 +10,7 @@
 #include <Quaternion.h>
 #include <TimedCall.h>
 
+class Audio;
 class GameObject;
 class BaseEnemy;
 class GameModeManager;
@@ -68,5 +69,8 @@ private: // メンバ変数
 
 	PopCommand* nowCommand;
 	std::list<PopCommand> enemyPopCommands;
+
+	bool isEnemyDead;
+	std::uint32_t enemyDeadSoundHandle;
 };
 

@@ -3,6 +3,7 @@
 #include <format>
 #include <fstream>
 
+#include <Audio.h>
 #include <Utility.h>
 #include <Definition.h>
 
@@ -20,6 +21,10 @@ EnemyManager::~EnemyManager() = default;
 
 void EnemyManager::initialize() {
 	create_enemy_data();
+	auto&& audio = Audio::GetInstance();
+	enemyDeadSoundHandle = audio->LoadWave("sounds/destroy.wav");
+
+	BaseEnemy::InitializeStaticAudio();
 }
 
 void EnemyManager::update() {
@@ -164,6 +169,7 @@ void EnemyManager::pop_enemy(const std::string& enemyTypeName, const std::string
 	newEnemy->get_transform().set_rotate(rotation);
 	newEnemy->load_move(fileName);
 	newEnemy->initialize();
+	newEnemy->set_dead_sound(enemyDeadSoundHandle);
 	newEnemy->begin_rendering();
 
 	enemies.push_back(std::move(newEnemy));

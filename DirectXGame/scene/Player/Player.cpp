@@ -6,6 +6,7 @@
 #include <ViewProjection.h>
 #include <Sprite.h>
 #include <TextureManager.h>
+#include <Audio.h>
 
 #include <GameTimer.h>
 #include <Transform3D.h>
@@ -63,6 +64,10 @@ void Player::initialize() {
 		++i;
 	}
 	invincibleTimer = 0.0f;
+
+	audio = Audio::GetInstance();
+	shotSoundHandle = audio->LoadWave("sounds/shot.wav");
+	damageSoundHandle = audio->LoadWave("sounds/damaged.wav");
 }
 
 void Player::update() {
@@ -120,6 +125,7 @@ void Player::draw_ui() const {
 void Player::attack() {
 	attackTimer = 0.08f;
 	if (attackFunction) {
+		audio->PlayWave(shotSoundHandle, false, 0.05f);
 		attackFunction();
 	}
 }
@@ -196,6 +202,7 @@ void Player::on_collision([[maybe_unused]] const BaseCollider* collider_) {
 		healthData[health].isFlashing = true;
 	}
 	cameraShakeFunction();
+	audio->PlayWave(damageSoundHandle, false, 0.7f);
 }
 
 #ifdef _DEBUG

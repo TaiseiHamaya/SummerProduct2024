@@ -9,6 +9,7 @@
 
 #include "Enemy/EnemyMoveState/BaseEnemyMoveState.h"
 
+class Audio;
 class GameModeManager;
 
 class BaseEnemy : public GameObject {
@@ -39,9 +40,13 @@ public:
 	//void set_state();
 	void set_attack_func(const std::function<void(const Vector3&, const Vector3&)>& func);
 	void set_game_mode_manager(const GameModeManager* manager);
+	void set_dead_sound(std::uint32_t handle);
 
 public:
 	void on_collision(const BaseCollider* collider_);
+
+public:
+	static void InitializeStaticAudio();
 
 public:
 	static std::unique_ptr<BaseEnemy> Create();
@@ -58,5 +63,8 @@ protected: // メンバ変数
 
 	std::stringstream moveCommand;
 	TimedCall<void(void)> moveCall;
+
+	std::uint32_t deadSoundHandle;
+	inline static Audio* audio = nullptr;
 };
 
