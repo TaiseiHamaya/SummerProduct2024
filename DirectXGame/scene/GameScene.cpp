@@ -20,93 +20,8 @@ GameScene::GameScene() = default;
 GameScene::~GameScene() = default;
 
 void GameScene::Initialize() {
-	WinApp::GetInstance()->SetSizeChangeMode(WinApp::SizeChangeMode::kNone);
-
-	dxCommon_ = DirectXCommon::GetInstance();
-	input_ = Input::GetInstance();
-	input_->SetJoystickDeadZone(0, 0, 0);
-	audio_ = Audio::GetInstance();
-
-	std::uint32_t bgmSoundHandle = audio_->LoadWave("sounds/bgm.wav");
-	audio_->PlayWave(bgmSoundHandle, true, 0.18f);
-
-	GameTimer::Initialize();
-
-	// いろいろロード
-	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
-	playerBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player/bullet", true));
-	enemyBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/bullet", true));
-	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
-
-	// 天球
-	skydome = std::make_unique<Skydome>();
-	skydome->initialize();
-	skydome->set_model(skydomeModel);
-
-	// フィールド
-	field = std::make_unique<RailField>();
-	field->initialize();
-
-	// カメラ
-	camera = std::make_unique<GazerCamera>();
-	camera->initialize();
-	camera->set_parent(*field);
-	camera->set_transform({
-		CVector3::BASIS,
-		Quaternion::EulerDegree(45, 0, 0),
-		CVector3::ZERO
-		});
-	camera->set_offset({ 0,0,-30 });
-
-	// プレイヤー
-	player = std::make_unique<Player>();
-	player->initialize();
-	player->default_data({ 0,0,0 });
-	player->set_model(playerModel);
-	player->set_parent(*field);
-	player->set_attack_func(std::bind(&GameScene::add_player_bullet, this));
-	player->set_camera(camera.get());
-
-	// GameModeManager
-	gameModeManager = std::make_unique<GameModeManager>();
-	gameModeManager->initialize();
-	gameModeManager->set_camera(camera.get());
-	gameModeManager->set_player_func(
-		std::bind(&Player::set_move_state, player.get(), std::placeholders::_1)
-	);
-
-	// EnemyManager
-	enemyManager = std::make_unique<EnemyManager>();
-	enemyManager->initialize();
-	enemyManager->set_field(*field);
-	enemyManager->set_attack_function(
-		std::bind(&GameScene::add_enemy_bullet, this, std::placeholders::_1, std::placeholders::_2)
-	);
-	enemyManager->set_game_mode_manager(gameModeManager.get());
-
-	// Timeline
-	timeline = std::make_unique<GameTimeline>();
-	timeline->set_mode(gameModeManager.get());
-	timeline->set_spawn_func(
-		std::bind(&EnemyManager::load_pop_file, enemyManager.get(), std::placeholders::_1)
-	);
-	timeline->set_enemies(&enemyManager->enemy_list());
-	timeline->initialize();
-
-	// Collision
-	collisionManager = std::make_unique<CollisionManager>();
-
-	// プレイヤー対象のエネミーに関連する初期化
-	ToPlayerEnemy::SetTargetPlayer(player.get());
-
-#ifdef _DEBUG
-	// 右上の座標軸描画の設定
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
-	AxisIndicator::GetInstance()->SetVisible(true);
-#endif // _DEBUG
-
-	// GameObjectのVPを設定
-	GameObject::SetStaticViewProjection(camera->get_view_projection());
+	load();
+	allocate();
 }
 
 void GameScene::Update() {
@@ -245,6 +160,99 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::load() {
+	WinApp::GetInstance()->SetSizeChangeMode(WinApp::SizeChangeMode::kNone);
+
+	dxCommon_ = DirectXCommon::GetInstance();
+	input_ = Input::GetInstance();
+	input_->SetJoystickDeadZone(0, 0, 0);
+	audio_ = Audio::GetInstance();
+
+	bgmSoundHandle = audio_->LoadWave("sounds/bgm.wav");
+
+	GameTimer::Initialize();
+
+	// いろいろロード
+	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
+	playerBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player/bullet", true));
+	enemyBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/bullet", true));
+	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
+}
+
+void GameScene::allocate() {
+	audio_->PlayWave(bgmSoundHandle, true, 0.18f);
+
+	// 天球
+	skydome = std::make_unique<Skydome>();
+	skydome->initialize();
+	skydome->set_model(skydomeModel);
+
+	// フィールド
+	field = std::make_unique<RailField>();
+	field->initialize();
+
+	// カメラ
+	camera = std::make_unique<GazerCamera>();
+	camera->initialize();
+	camera->set_parent(*field);
+	camera->set_transform({
+		CVector3::BASIS,
+		Quaternion::EulerDegree(45, 0, 0),
+		CVector3::ZERO
+		});
+	camera->set_offset({ 0,0,-30 });
+
+	// プレイヤー
+	player = std::make_unique<Player>();
+	player->initialize();
+	player->default_data({ 0,0,0 });
+	player->set_model(playerModel);
+	player->set_parent(*field);
+	player->set_attack_func(std::bind(&GameScene::add_player_bullet, this));
+	player->set_camera(camera.get());
+
+	// GameModeManager
+	gameModeManager = std::make_unique<GameModeManager>();
+	gameModeManager->initialize();
+	gameModeManager->set_camera(camera.get());
+	gameModeManager->set_player_func(
+		std::bind(&Player::set_move_state, player.get(), std::placeholders::_1)
+	);
+
+	// EnemyManager
+	enemyManager = std::make_unique<EnemyManager>();
+	enemyManager->initialize();
+	enemyManager->set_field(*field);
+	enemyManager->set_attack_function(
+		std::bind(&GameScene::add_enemy_bullet, this, std::placeholders::_1, std::placeholders::_2)
+	);
+	enemyManager->set_game_mode_manager(gameModeManager.get());
+
+	// Timeline
+	timeline = std::make_unique<GameTimeline>();
+	timeline->set_mode(gameModeManager.get());
+	timeline->set_spawn_func(
+		std::bind(&EnemyManager::load_pop_file, enemyManager.get(), std::placeholders::_1)
+	);
+	timeline->set_enemies(&enemyManager->enemy_list());
+	timeline->initialize();
+
+	// Collision
+	collisionManager = std::make_unique<CollisionManager>();
+
+	// プレイヤー対象のエネミーに関連する初期化
+	ToPlayerEnemy::SetTargetPlayer(player.get());
+
+#ifdef _DEBUG
+	// 右上の座標軸描画の設定
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&camera->get_view_projection());
+	AxisIndicator::GetInstance()->SetVisible(true);
+#endif // _DEBUG
+
+	// GameObjectのVPを設定
+	GameObject::SetStaticViewProjection(camera->get_view_projection());
 }
 
 void GameScene::add_player_bullet() {

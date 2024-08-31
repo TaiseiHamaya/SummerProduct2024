@@ -48,6 +48,9 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	void load();
+	void allocate();
+
 public:
 	void add_player_bullet();
 	void add_enemy_bullet(const Vector3& position, const Vector3& direction);
@@ -78,4 +81,6 @@ private: // メンバ変数
 	std::list<Bullet> playerBullets;
 	std::unique_ptr<EnemyManager> enemyManager;
 	std::list<Bullet> enemyBullets;
+
+	std::uint32_t bgmSoundHandle;
 };
