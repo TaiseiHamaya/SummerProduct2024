@@ -1,11 +1,14 @@
 #pragma once
 
+#include <list>
+
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
 #include <BaseScene.h>
 
 #include "Camera/GazerCamera.h"
+#include "Particle/Particle.h"
 
 #include "Model.h"
 
@@ -61,6 +64,7 @@ public: // メンバ関数
 public:
 	void add_player_bullet();
 	void add_enemy_bullet(const Vector3& position, const Vector3& direction);
+	void add_bullet_dead(const Bullet* bullet);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -93,4 +97,7 @@ private: // メンバ変数
 
 	std::uint32_t bgmSoundHandle;
 	std::uint32_t bgmVoiceHandle;
+
+	std::shared_ptr<Model> particleModel;
+	std::list<ParticleSystem> particleSystems;
 };

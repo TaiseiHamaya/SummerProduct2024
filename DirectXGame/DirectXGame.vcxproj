@@ -145,6 +145,7 @@
     <ClCompile Include="scene\Enemy\ShotgunEnemy.cpp" />
     <ClCompile Include="scene\Enemy\ToPlayerEnemy.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="scene\Particle\Particle.cpp" />
     <ClCompile Include="scene\Player\Bullet.cpp" />
     <ClCompile Include="scene\Player\MoveState\BaseMoveState.cpp" />
     <ClCompile Include="scene\Player\MoveState\OmnidirectionalMove.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="scene\Enemy\ShotgunEnemy.h" />
     <ClInclude Include="scene\Enemy\ToPlayerEnemy.h" />
     <ClInclude Include="scene\GameScene.h" />
+    <ClInclude Include="scene\Particle\Particle.h" />
     <ClInclude Include="scene\Player\Bullet.h" />
     <ClInclude Include="scene\Player\MoveState\BaseMoveState.h" />
     <ClInclude Include="scene\Player\MoveState\OmnidirectionalMove.h" />

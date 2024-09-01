@@ -24,6 +24,8 @@ void EnemyManager::initialize() {
 	auto&& audio = Audio::GetInstance();
 	enemyDeadSoundHandle = audio->LoadWave("sounds/destroy.wav");
 
+	particleModel.reset(Model::CreateFromOBJ("enemies/explosion", true));
+
 	BaseEnemy::InitializeStaticAudio();
 }
 
@@ -42,17 +44,29 @@ void EnemyManager::update() {
 	enemies.remove_if(
 		[](const std::unique_ptr<BaseEnemy>& enemy) { return enemy->is_dead(); }
 	);
+
+	for (auto&& itr = particleSystems.begin(); itr != particleSystems.end(); ++itr) {
+		itr->update();
+	}
 }
 
 void EnemyManager::begin_rendering() {
 	for (auto&& itr = enemies.begin(); itr != enemies.end(); ++itr) {
 		itr->get()->begin_rendering();
 	}
+
+	for (auto&& itr = particleSystems.begin(); itr != particleSystems.end(); ++itr) {
+		itr->begin_rendering();
+	}
 }
 
 void EnemyManager::draw() const {
 	for (auto&& itr = enemies.begin(); itr != enemies.end(); ++itr) {
 		itr->get()->draw();
+	}
+
+	for (auto&& itr = particleSystems.begin(); itr != particleSystems.end(); ++itr) {
+		itr->draw();
 	}
 }
 
@@ -74,6 +88,18 @@ void EnemyManager::load_pop_file(const std::string& fileName) {
 	command.call = {
 		std::bind(&EnemyManager::next_pop_command, this), 0
 	};
+}
+
+void EnemyManager::pop_particle(const BaseEnemy* enemy) {
+	auto&& newParticleSystem = particleSystems.emplace_back();
+	newParticleSystem.initialize();
+	newParticleSystem.set_emitter(
+		enemy->get_position(),
+		0.1f, 8, 0.0f, false
+	);
+	newParticleSystem.set_default_particle(
+		0.5f, particleModel, { 0,-9.8f,0 }
+	);
 }
 
 void EnemyManager::set_field(const GameObject& rhs) {
@@ -170,6 +196,7 @@ void EnemyManager::pop_enemy(const std::string& enemyTypeName, const std::string
 	newEnemy->load_move(fileName);
 	newEnemy->initialize();
 	newEnemy->set_dead_sound(enemyDeadSoundHandle);
+	newEnemy->set_dead_particle_func(std::bind(&EnemyManager::pop_particle, this, newEnemy.get()));
 	newEnemy->begin_rendering();
 
 	enemies.push_back(std::move(newEnemy));

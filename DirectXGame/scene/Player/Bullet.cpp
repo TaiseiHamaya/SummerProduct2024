@@ -31,4 +31,11 @@ void Bullet::update() {
 
 void Bullet::on_collision([[maybe_unused]] const BaseCollider* collider_) {
 	isDead = true;
+	if (particleFunction) {
+		particleFunction();
+	}
+}
+
+void Bullet::set_particle_function(const std::function<void(void)>& function) {
+	particleFunction = function;
 }

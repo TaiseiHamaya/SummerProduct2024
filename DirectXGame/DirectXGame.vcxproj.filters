@@ -133,6 +133,12 @@
     <Filter Include="ヘッダー ファイル\scenes\title">
       <UniqueIdentifier>{d2a459b2-4ab5-45e2-9d27-beb873084374}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\scene\particle">
+      <UniqueIdentifier>{f8bc37b4-d137-45fe-9757-e826d3b04285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scene\particle">
+      <UniqueIdentifier>{aeff6b14-76f8-4261-b8d2-92110ca0858d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -284,6 +290,9 @@
     </ClCompile>
     <ClCompile Include="scenes\Dead\DeadScene.cpp">
       <Filter>ソース ファイル\scenes\dead</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Particle\Particle.cpp">
+      <Filter>ソース ファイル\scene\particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -505,6 +514,9 @@
     </ClInclude>
     <ClInclude Include="scenes\Title\TitleScene.h">
       <Filter>ヘッダー ファイル\scenes\title</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Particle\Particle.h">
+      <Filter>ヘッダー ファイル\scene\particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -181,10 +181,15 @@ void BaseEnemy::set_dead_sound(std::uint32_t handle) {
 	deadSoundHandle = handle;
 }
 
+void BaseEnemy::set_dead_particle_func(const std::function<void(void)>& function) {
+	deadParticleFunc = function;
+}
+
 void BaseEnemy::on_collision([[maybe_unused]] const BaseCollider* collider_) {
 	--hitpoint;
 	if (hitpoint == 0) {
 		audio->PlayWave(deadSoundHandle, false, 0.5f);
+		deadParticleFunc();
 	}
 }
 

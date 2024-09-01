@@ -41,6 +41,7 @@ public:
 	void set_attack_func(const std::function<void(const Vector3&, const Vector3&)>& func);
 	void set_game_mode_manager(const GameModeManager* manager);
 	void set_dead_sound(std::uint32_t handle);
+	void set_dead_particle_func(const std::function<void(void)>& function);
 
 public:
 	void on_collision(const BaseCollider* collider_);
@@ -66,5 +67,7 @@ protected: // メンバ変数
 
 	std::uint32_t deadSoundHandle;
 	inline static Audio* audio = nullptr;
+
+	std::function<void(void)> deadParticleFunc;
 };
 

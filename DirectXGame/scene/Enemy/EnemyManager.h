@@ -10,6 +10,8 @@
 #include <Quaternion.h>
 #include <TimedCall.h>
 
+#include "Particle/Particle.h"
+
 class Audio;
 class GameObject;
 class BaseEnemy;
@@ -33,6 +35,7 @@ public: // publicメンバ関数
 	void draw() const;
 
 	void load_pop_file(const std::string& fileName);
+	void pop_particle(const BaseEnemy* enemy);
 
 public:
 	void set_field(const GameObject& rhs);
@@ -44,9 +47,9 @@ private:
 	void next_pop_command();
 	void create_enemy_data();
 	void pop_enemy(
-		const std::string& enemyTypeName, 
-		const std::string& fileName, 
-		const Vector3& position, 
+		const std::string& enemyTypeName,
+		const std::string& fileName,
+		const Vector3& position,
 		const Quaternion& rotation
 	);
 
@@ -72,5 +75,8 @@ private: // メンバ変数
 
 	bool isEnemyDead;
 	std::uint32_t enemyDeadSoundHandle;
+
+	std::list<ParticleSystem> particleSystems;
+	std::shared_ptr<Model> particleModel;
 };
 

@@ -70,6 +70,9 @@ void GameScene::update() {
 		itr->update();
 	}
 	enemyManager->update();
+	for (auto&& itr = particleSystems.begin(); itr != particleSystems.end(); ++itr) {
+		itr->update();
+	}
 
 	playerBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
 	enemyBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
@@ -100,6 +103,10 @@ void GameScene::begin_rendering() {
 		itr->begin_rendering();
 	}
 	enemyManager->begin_rendering();
+
+	for (auto&& itr = particleSystems.begin(); itr != particleSystems.end(); ++itr) {
+		itr->begin_rendering();
+	}
 }
 
 void GameScene::after_update() {
@@ -158,6 +165,10 @@ void GameScene::draw() const {
 	enemyManager->draw();
 	skydome->draw();
 
+	for (auto&& itr = particleSystems.begin(); itr != particleSystems.end(); ++itr) {
+		itr->draw();
+	}
+
 #ifdef _DEBUG
 	field->debug_draw();
 #endif // _DEBUG
@@ -199,6 +210,7 @@ void GameScene::load() {
 	playerBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player/bullet", true));
 	enemyBulletModel = std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/bullet", true));
 	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
+	particleModel = std::shared_ptr<Model>(Model::CreateFromOBJ("enemies/bullet/explosion", true));
 }
 
 void GameScene::allocate() {
@@ -284,9 +296,21 @@ void GameScene::add_player_bullet() {
 }
 
 void GameScene::add_enemy_bullet(const Vector3& position, const Vector3& direction) {
-	enemyBullets.emplace_back();
-	auto&& newBullet = enemyBullets.back();
+	auto&& newBullet = enemyBullets.emplace_back();
+	
 	newBullet.initialize(position, direction, 5.0f);
+	newBullet.set_particle_function(std::bind(&GameScene::add_bullet_dead, this, &newBullet));
 	newBullet.set_model(enemyBulletModel);
+}
 
+void GameScene::add_bullet_dead(const Bullet* bullet) {
+	auto&& newParticleSystem = particleSystems.emplace_back();
+	newParticleSystem.initialize();
+	newParticleSystem.set_emitter(
+		bullet->get_position(),
+		0.1f, 3, 0.0f, false
+	);
+	newParticleSystem.set_default_particle(
+		0.2f, particleModel, { 0,-9.8f,0 }
+	);
 }

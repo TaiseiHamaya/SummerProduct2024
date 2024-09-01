@@ -16,10 +16,13 @@ public:
 
 	void on_collision(const BaseCollider* collider_);
 
+	void set_particle_function(const std::function<void(void)>& function);
+
 private:
 	Vector3 direction;
 	float speed;
 
 	float lifeTime;
-};
 
+	std::function<void(void)> particleFunction;
+};
