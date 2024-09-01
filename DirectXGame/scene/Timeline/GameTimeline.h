@@ -24,6 +24,7 @@ public:
 	void set_spawn_func(std::function<void(const std::string&)> spawnFunction_);
 	void set_mode(GameModeManager* gameMode_);
 	void set_enemies(const std::list<std::unique_ptr<BaseEnemy>>* enemies);
+	bool is_end_timeline() const;
 
 #ifdef _DEBUG
 public:

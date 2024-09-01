@@ -7,9 +7,12 @@
 
 #include <Camera3D.h>
 #include <GameTimer.h>
+#include "SceneManager.h"
 
 #include "Enemy/BaseEnemy.h"
 #include "Enemy/ToPlayerEnemy.h"
+#include "scenes/Clear/ClearScene.h"
+#include "scenes/Dead/DeadScene.h"
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -25,8 +28,6 @@ void GameScene::initialize() {
 }
 
 void GameScene::begin() {
-	GameTimer::Update();
-
 	collisionManager->begin_flame();
 }
 
@@ -72,6 +73,17 @@ void GameScene::update() {
 
 	playerBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
 	enemyBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
+
+	if (player->is_dead()) {
+		SceneManager::GetInstance().set_next_scene(
+			std::make_unique<DeadScene>()
+		);
+	}
+	if (timeline->is_end_timeline() && enemyManager->enemy_list().empty()) {
+		SceneManager::GetInstance().set_next_scene(
+			std::make_unique<ClearScene>()
+		);
+	}
 }
 
 void GameScene::begin_rendering() {

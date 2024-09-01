@@ -109,6 +109,30 @@
     <Filter Include="ソース ファイル\scene\skydome">
       <UniqueIdentifier>{868bbf74-b80e-40e8-9921-17c2ab6a8339}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\scenes">
+      <UniqueIdentifier>{592dbf27-7d0a-4bf5-ad85-968b4cb443d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\scenes\title">
+      <UniqueIdentifier>{171fcd14-5cc8-4703-909e-4f05a7cd3d3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\scenes\dead">
+      <UniqueIdentifier>{80eb813d-f1ec-45cb-b8d6-8d22b9646908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\scenes\clear">
+      <UniqueIdentifier>{764bd6ba-d84c-45f3-a99f-657fd53d8c75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scenes">
+      <UniqueIdentifier>{6592f349-73cb-454a-a1cd-d1f799449531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scenes\clear">
+      <UniqueIdentifier>{32aa256c-d0ed-4252-9e52-6d0a0f231f61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scenes\dead">
+      <UniqueIdentifier>{e96369fb-0df1-4888-b143-89bc68ae5ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scenes\title">
+      <UniqueIdentifier>{d2a459b2-4ab5-45e2-9d27-beb873084374}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -251,6 +275,15 @@
     </ClCompile>
     <ClCompile Include="game\BaseScene.cpp">
       <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="scenes\Clear\ClearScene.cpp">
+      <Filter>ソース ファイル\scenes\clear</Filter>
+    </ClCompile>
+    <ClCompile Include="scenes\Title\TitleScene.cpp">
+      <Filter>ソース ファイル\scenes\title</Filter>
+    </ClCompile>
+    <ClCompile Include="scenes\Dead\DeadScene.cpp">
+      <Filter>ソース ファイル\scenes\dead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -463,6 +496,15 @@
     </ClInclude>
     <ClInclude Include="game\BaseScene.h">
       <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scenes\Clear\ClearScene.h">
+      <Filter>ヘッダー ファイル\scenes\clear</Filter>
+    </ClInclude>
+    <ClInclude Include="scenes\Dead\DeadScene.h">
+      <Filter>ヘッダー ファイル\scenes\dead</Filter>
+    </ClInclude>
+    <ClInclude Include="scenes\Title\TitleScene.h">
+      <Filter>ヘッダー ファイル\scenes\title</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

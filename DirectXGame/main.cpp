@@ -10,6 +10,8 @@
 
 #include <SceneManager.h>
 
+#include "scenes/Title/TitleScene.h"
+
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	WinApp* win = nullptr;
@@ -62,7 +64,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion
 
 	// ゲームシーンの初期化
+#ifdef _DEBUG
 	sceneManager.set_next_scene(std::make_unique<GameScene>());
+#else
+	sceneManager.set_next_scene(std::make_unique<TitleScene>());
+#endif // _DEBUG
+
+	GameTimer::Initialize();
 
 	// メインループ
 	while (true) {
@@ -71,13 +79,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 
-		sceneManager.begin();
+		GameTimer::Update();
 
 		// ImGui受付開始
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
 		// ゲームシーンの毎フレーム処理
+		sceneManager.begin();
 		sceneManager.update();
 		// 軸表示の更新
 		axisIndicator->Update();

@@ -122,6 +122,10 @@ void GameTimeline::set_enemies(const std::list<std::unique_ptr<BaseEnemy>>* enem
 	enemyList = enemies;
 }
 
+bool GameTimeline::is_end_timeline() const {
+	return timelineCommand.eof();
+}
+
 #ifdef _DEBUG
 
 #include <imgui.h>

@@ -126,6 +126,9 @@
     <ClCompile Include="math\Transform3D.cpp" />
     <ClCompile Include="math\Vector2.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
+    <ClCompile Include="scenes\Clear\ClearScene.cpp" />
+    <ClCompile Include="scenes\Dead\DeadScene.cpp" />
+    <ClCompile Include="scenes\Title\TitleScene.cpp" />
     <ClCompile Include="scene\Camera\GazerCamera.cpp" />
     <ClCompile Include="scene\Collision\BaseCollider.cpp" />
     <ClCompile Include="scene\Collision\CollisionManager.cpp" />
@@ -198,6 +201,9 @@
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
+    <ClInclude Include="scenes\Clear\ClearScene.h" />
+    <ClInclude Include="scenes\Dead\DeadScene.h" />
+    <ClInclude Include="scenes\Title\TitleScene.h" />
     <ClInclude Include="scene\Camera\GazerCamera.h" />
     <ClInclude Include="scene\Collision\BaseCollider.h" />
     <ClInclude Include="scene\Collision\CollisionManager.h" />

@@ -138,6 +138,10 @@ void Player::update() {
 		);
 
 	rotationTutorialSprite->SetPosition({ playerScreenPosition.x + 50, playerScreenPosition.y });
+
+	if (health <= 0) {
+		isDead = true;
+	}
 }
 
 void Player::draw_ui() const {
