@@ -75,11 +75,13 @@ void GameScene::update() {
 	enemyBullets.remove_if([](const Bullet& bullet) { return bullet.is_dead(); });
 
 	if (player->is_dead()) {
+		audio_->StopWave(bgmVoiceHandle);
 		SceneManager::GetInstance().set_next_scene(
 			std::make_unique<DeadScene>()
 		);
 	}
 	if (timeline->is_end_timeline() && enemyManager->enemy_list().empty()) {
+		audio_->StopWave(bgmVoiceHandle);
 		SceneManager::GetInstance().set_next_scene(
 			std::make_unique<ClearScene>()
 		);
@@ -200,7 +202,7 @@ void GameScene::load() {
 }
 
 void GameScene::allocate() {
-	audio_->PlayWave(bgmSoundHandle, true, 0.18f);
+	bgmVoiceHandle = audio_->PlayWave(bgmSoundHandle, true, 0.18f);
 
 	// 天球
 	skydome = std::make_unique<Skydome>();

@@ -89,5 +89,8 @@ private: // メンバ変数
 	std::unique_ptr<EnemyManager> enemyManager;
 	std::list<Bullet> enemyBullets;
 
+	//std::list<BulletExplosion> enemyBulletExplosion;
+
 	std::uint32_t bgmSoundHandle;
+	std::uint32_t bgmVoiceHandle;
 };
