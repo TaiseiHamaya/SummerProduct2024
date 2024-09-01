@@ -39,7 +39,7 @@ public: // メンバ関数
 	/// </summary>
 	void initialize() override;
 	
-	void begin();
+	void begin() override;
 
 	/// <summary>
 	/// 毎フレーム処理

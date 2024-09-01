@@ -41,7 +41,7 @@ void Player::initialize() {
 	tempCollider->set_radius(0.5f);
 	collider = std::move(tempCollider);
 
-	auto handle = TextureManager::GetInstance()->Load("./Resources/player/hitpoint/hitpoint.png");
+	auto handle = TextureManager::GetInstance()->Load("player/hitpoint/hitpoint.png");
 	for (int i = 0; auto & healthItr : healthData) {
 		healthItr.sprite = std::unique_ptr<Sprite>(Sprite::Create(handle, { 0,0 }));
 		healthItr.sprite->Initialize();
@@ -72,7 +72,7 @@ void Player::initialize() {
 
 	doneRotationTutorial = false;
 	isShowRotationTutorial = false;
-	rotationTutorialSpriteHandle = TextureManager::GetInstance()->Load("/UI/tutorial/rotation.png");
+	rotationTutorialSpriteHandle = TextureManager::GetInstance()->Load("sprite/UI/tutorial/rotation.png");
 	rotationTutorialCall = {
 		[&]() { isShowRotationTutorial = false; },
 		5
